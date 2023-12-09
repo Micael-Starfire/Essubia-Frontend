@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" />
+        <title>Conquest of Essubia</title>
+        <link href="gameStyle.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+        <div id="navBar">
+            <ul>
+            <li class="navLabel" id="resourceListButton" >
+                <img src="./resourceButton.png" class="icon" />
+                <div id="resourceList" >
+                </div>
+            </li>
+            <li class="navLabel" id="fieldLabor" >
+            </li>
+        </ul>
+        </div>
+
+        
+
+        <div id="mapBox">
+            <table id="mapTable">
+
+            </table>
+        </div>
+
+        <div id="tileInfoBox" >
+            <div id="tileStats">
+
+            </div>
+            <div id="tileFaction">
+                <u class="label">Owner</u><br>
+                <span id="tileOwner"></span>
+                <button id="claimTileButton" class="action">Claim Tile</button>
+            </div>
+            <div id="tileStructure">
+                <u class="label">Structure</u><br/>
+                <span id="showStructure"></span>
+                <button id="buildStructureButton" class="action">Build Structure</button>
+                <br/>
+                <span id="showRoad"></span>
+                <button id="buildRoadButton" class="action">Build Road</button>
+            </div>
+        <button id="improveQualityButton" class="action">Improve Quality</button>
+        <button id="manageGarrisonButton" class="action">Manage Garrison</button>
+
+        </div>
+
+        <div id="armyInfoBox" >
+            <div id="armyStats">
+               <strong id="armyName"></strong><br>
+               <span>   Controlled by </span>
+               <span id="armyOwner"></span>
+            </div>
+
+            <button id="manageArmyButton" class="action">Manage Army</button>
+            <button id="moveArmyButton" class="action">Move Army</button>
+            <button id="contestTerritoryButton" class="action">Contest Territory</button>
+            <button id="generalOrdersButton" class="action">General Orders</button>
+            <button id="inspectArmyButton" class="action">Inspect Army</button>
+        </div>
+
+        <div id="structureListBox" >
+            <div id="structureList" >
+            </div>
+        </div>
+
+        <script type='module' src="essubia.js" ></script>
+
+        <img id="field" class="asset" src="./assets/art/fieldImg.png" />
+        <img id="forest" class="asset" src="./assets/art/forestImg.png" />
+        <img id="hill" class="asset" src="./assets/art/hillImg.png" />
+        <img id="mountain" class="asset" src="./assets/art/mountainImg.png" />
+        <img id="water" class="asset" src="./assets/art/waterImg.png" />
+
+        <img id="capital" class="asset" src="./assets/art/capital.png" />
+        <img id="farm" class="asset" src="./assets/art/farm.png" />
+        <img id="lumbermill" class="asset" src="./assets/art/lumbermill.png" />
+        <img id="ranch" class="asset" src="./assets/art/ranch.png" />
+        <img id="lodge" class="asset" src="./assets/art/lodge.png" />
+        <img id="mine" class="asset" src="./assets/art/mine.png" />
+        <img id="depot" class="asset" src="./assets/art/depot.png" />
+        <img id="fort" class="asset" src="./assets/art/fort.png" />
+
+        <img id="roadN" class="asset" src="./assets/art/roadN.png" />
+        <img id="roadNW" class="asset" src="./assets/art/roadNW.png" />
+        <img id="roadNE" class="asset" src="./assets/art/roadNE.png" />
+        <img id="roadW" class="asset" src="./assets/art/roadW.png" />
+        <img id="roadE" class="asset" src="./assets/art/roadE.png" />
+        <img id="roadS" class="asset" src="./assets/art/roadS.png" />
+        <img id="roadSW" class="asset" src="./assets/art/roadSW.png" />
+        <img id="roadSE" class="asset" src="./assets/art/roadSE.png" />
+
+        <img id="friendlyArmy" class="asset" src="./assets/art/friendlyArmy.png" />
+        <img id="enemyArmy" class="asset" src="./assets/art/enemyArmy.png" />
+
+    </body>
+</html>

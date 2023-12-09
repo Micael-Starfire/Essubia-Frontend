@@ -1,0 +1,274 @@
+body {
+    background-color: black;
+    color: white;
+    box-sizing: border-box;
+    font-size: 2.2vmin;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#navBar {
+    position: absolute;
+    width: 100%;
+    height: 5vh;
+    top: 0px;
+    left: 0px;
+    background-color: blue;
+    color: white;
+    border-bottom: 1vh solid gold;
+}
+
+.navLabel {
+    float: left;
+    text-align: left;
+    
+    padding-bottom: 1vh;
+    padding-top: 1vh;
+}
+
+#resourceListButton {
+    position: relative;
+    width: 5vh;
+    display: inline-block;
+    margin-left: 2vw;
+}
+
+#resourceList {
+    display: none;
+    background-color: navy;
+    top: 5vh;
+    left: 0;
+    position: absolute;
+    min-width: 12vw;
+    min-height: 25vh;
+    border: 1vh solid gold;
+    padding-left: 1em;
+    z-index: 552;
+}
+
+/*
+#resourceListButton:hover {
+    background-color: aqua;
+}
+*/
+#resourceListButton:hover > #resourceList {
+    display: block;
+    position: fixed;
+}
+
+#fieldLabor {
+    min-width: 10vw;
+}
+
+
+#mapBox {
+    position: absolute;
+    width: 74vw;
+    height: 93vh;
+    top: 6vh;
+    left: 25vw;
+    border-bottom: 1vh solid gold;
+    border-left: 1vh solid gold;
+    border-right: 1vh solid gold;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+
+#mapTable {
+    position: absolute;
+    border-collapse: collapse;
+}
+
+
+.tile {
+    min-width: 15vmin;
+    min-height: 15vmin;
+    margin: 0px;
+    padding-right: 1px;
+    border: 1px gray;
+}
+
+.terrain {
+    width: 100%;
+    min-width: 15vmin;
+    height: 100%;
+    min-height: 15vmin;
+}
+
+
+#tileInfoBox {
+    position: absolute;
+    width: 25vw;
+    height: 40vh;
+    top: 5vh;
+    left: 0vh;
+    border-bottom: 1vh solid gold;
+    border-left: 1vh solid gold; 
+}
+
+#tileStats {
+    position: relative;
+    height: 5.5vh;
+    width: 100%;
+    text-align: center;
+}
+
+#tileFaction {
+    position: relative;
+    height: 25%;
+    width: 100%;
+    top: 6vh;
+    text-align: center;
+}
+
+#tileOwner {
+    display: inline-block;
+}
+
+#claimTileButton {
+    display: none;
+}
+
+#tileStructure {
+    position: relative;
+    height: 25%;
+    width: 100%;
+    top: 7vh;
+    text-align: center;
+}
+
+#buildStructureButton {
+    display: none;
+}
+
+#buildRoadButton {
+    display: none;
+}
+
+#improveQualityButton {
+    position: absolute;
+    bottom: 1vh;
+    left: 2vw;
+}
+
+#manageGarrisonButton {
+    position: absolute;
+    bottom: 1vh;
+    right: 2vw;
+}
+
+#armyInfoBox {
+    position: absolute;
+    width: 25vw;
+    height: 25vh;
+    top: 46vh;
+    left: 0vh;
+    border-bottom: 1vh solid gold;
+    border-left: 1vh solid gold; 
+    display: none;
+    align-content: center;
+}
+
+#armyStats {
+    position: absolute;
+    left: 1vw;
+    top: 1vh;
+}
+
+#manageArmyButton {
+    position: absolute;
+    bottom: 1vh;
+    left: 2vw;
+}
+
+#moveArmyButton {
+    position: absolute;
+    bottom: 1vh;
+    right: 2vw;
+}
+
+#contestTerritoryButton {
+    position: absolute;
+    bottom: 5vh;
+    left: 2vw;
+}
+
+#generalOrdersButton {
+    position: absolute;
+    bottom: 5vh;
+    right: 2vw;
+}
+
+#inspectArmyButton {
+    position: absolute;
+    bottom: 1vh;
+    transform: translate(50%);
+    display: none;
+}
+
+#structureListBox {
+    position: absolute;
+    width: 40vw;
+    height: 60vh;
+    display: none;
+    border: 1vmin solid gold;
+}
+
+#structureList {
+    top: 5vh;
+    left: 2vw;
+    height: 45vh;
+    width: 35vw;
+    overflow: scroll;
+}
+
+.structureSelection {
+    height: 10vh;
+    width: 35vw;
+}
+
+.structureSelection:hover {
+    background-color: darkgray;
+}
+
+.selectionData {
+    width: 20vw;
+}
+
+.selectionCost {
+    width: 15vw;
+}
+
+
+
+.closeBox {
+    top: 0;
+    right: 0;
+    height: 3vmin;
+    width: 3vmin;
+}
+
+.asset {
+    display: none;
+}
+
+.icon {
+    height: 3vmin;
+    width: auto;
+}
+
+.action {
+    height: 3.5vh;
+    border-radius: 25px;
+    background-color: gold;
+    width: 10vw;
+    font-size: 100%;
+    font-family: inherit;
+}
+
+
