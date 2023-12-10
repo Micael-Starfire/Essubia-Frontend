@@ -16,7 +16,7 @@ const MAP_HEIGHT = 16;
 // ----- Global Variables -----------------------------------------------------
 let gTileMap = new TileMap();
 let gStructureTemplates = {};
-let gUnitTemplates = [];
+let gUnitTemplates = {};
 let gPlayer = new Player("mjm", "Draconis Imperium");
 let gImmediateOrders = [];
 let gBuildOrders = [];
@@ -389,22 +389,22 @@ function buildTemplates() {
         this.maxCohesion, this.speed, this.bulk
     ); */
 
-    gUnitTemplates.push( new Unit(
-        "0", "Militia", 1, 1, 1, 1,
+    gUnitTemplates["militia"] = new Unit(
+        "militia", "Militia", 1, 1, 1, 1,
         40, 8, 4
-    ));
-    gUnitTemplates.push( new Unit(
-        "1", "Basic Infantry", 2, 2, 1, 1,
+    );
+    gUnitTemplates["infantry"] = new Unit(
+        "infantry", "Basic Infantry", 2, 2, 1, 1,
         50, 8, 2
-    ));
-    gUnitTemplates.push( new Unit(
-        "2", "Archers", 1, 1, 3, 1,
+    );
+    gUnitTemplates["archer"] = new Unit(
+        "archer", "Archers", 1, 1, 3, 1,
         50, 8, 2
-    ));
-    gUnitTemplates.push( new Unit (
-        "3", "Cavalry", 3, 1, 1, 1,
+    );
+    gUnitTemplates["cavalry"] = new Unit (
+        "cavalry", "Cavalry", 3, 1, 1, 1,
         50, 16, 2
-    ));
+    );
 
 }
 
@@ -415,9 +415,9 @@ function buildStructures() {
 
     // Connect garrison to Capital and populate it
     gTileMap.selectTile(4,4).garrison = new Garrison(4,4);
-    gTileMap.selectTile(4,4).garrison.createUnit(gUnitTemplates[0], "c01");
-    gTileMap.selectTile(4,4).garrison.createUnit(gUnitTemplates[2], "c02");
-    gTileMap.selectTile(4,4).garrison.createUnit(gUnitTemplates[2], "c03");
+    gTileMap.selectTile(4,4).garrison.createUnit(gUnitTemplates["archer"], "c01");
+    gTileMap.selectTile(4,4).garrison.createUnit(gUnitTemplates["archer"], "c02");
+    gTileMap.selectTile(4,4).garrison.createUnit(gUnitTemplates["archer"], "c03");
 
 
     // build farms
@@ -439,10 +439,10 @@ function buildStructures() {
     gTileMap.selectTile(6,5).garrison = new Garrison(6,5);
 
     // Populate garrison
-    gTileMap.selectTile(6,5).garrison.createUnit(gUnitTemplates[0], "g01");
-    gTileMap.selectTile(6,5).garrison.createUnit(gUnitTemplates[0], "g02");
-    gTileMap.selectTile(6,5).garrison.createUnit(gUnitTemplates[2], "g03");
-    gTileMap.selectTile(6,5).garrison.createUnit(gUnitTemplates[3], "g04");
+    gTileMap.selectTile(6,5).garrison.createUnit(gUnitTemplates["militia"], "g01");
+    gTileMap.selectTile(6,5).garrison.createUnit(gUnitTemplates["militia"], "g02");
+    gTileMap.selectTile(6,5).garrison.createUnit(gUnitTemplates["archer"], "g03");
+    gTileMap.selectTile(6,5).garrison.createUnit(gUnitTemplates["cavalry"], "g04");
 
     // build depot
     gTileMap.selectTile(6,7).buildStructure(gStructureTemplates["depot"]);
@@ -473,25 +473,25 @@ function buildStructures() {
 
     // Create field army
     gTileMap.selectTile(8,6).army = new Army("Cavalry Force", "field01", "mjm", 8, 6);
-    gTileMap.selectTile(8,6).army.addUnit( gUnitTemplates[3].create("a01"));
-    gTileMap.selectTile(8,6).army.addUnit( gUnitTemplates[3].create("a02"));
-    gTileMap.selectTile(8,6).army.addUnit( gUnitTemplates[3].create("a03"));
-    gTileMap.selectTile(8,6).army.addUnit( gUnitTemplates[3].create("a04"));
+    gTileMap.selectTile(8,6).army.addUnit( gUnitTemplates["cavalry"].create("a01"));
+    gTileMap.selectTile(8,6).army.addUnit( gUnitTemplates["cavalry"].create("a02"));
+    gTileMap.selectTile(8,6).army.addUnit( gUnitTemplates["cavalry"].create("a03"));
+    gTileMap.selectTile(8,6).army.addUnit( gUnitTemplates["cavalry"].create("a04"));
 
     // Create second field army
     gTileMap.selectTile(9,9).army = new Army("Expeditionary Force", "field02", "mjm", 9, 9);
-    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates[1].create("b01"));
-    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates[1].create("b02"));
-    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates[2].create("b03"));
-    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates[2].create("b04"));
-    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates[3].create("b05"));
+    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates["infantry"].create("b01"));
+    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates["infantry"].create("b02"));
+    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates["archer"].create("b03"));
+    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates["archer"].create("b04"));
+    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates["cavalry"].create("b05"));
 
     // Create hostile army
     gTileMap.selectTile(10,7).army = new Army("Cavalry Force", "hostile01", "other", 10, 7);
-    gTileMap.selectTile(10,7).army.addUnit( gUnitTemplates[1].create("h01"));
-    gTileMap.selectTile(10,7).army.addUnit( gUnitTemplates[1].create("h02"));
-    gTileMap.selectTile(10,7).army.addUnit( gUnitTemplates[2].create("h03"));
-    gTileMap.selectTile(10,7).army.addUnit( gUnitTemplates[2].create("h04"));
+    gTileMap.selectTile(10,7).army.addUnit( gUnitTemplates["infantry"].create("h01"));
+    gTileMap.selectTile(10,7).army.addUnit( gUnitTemplates["infantry"].create("h02"));
+    gTileMap.selectTile(10,7).army.addUnit( gUnitTemplates["archer"].create("h03"));
+    gTileMap.selectTile(10,7).army.addUnit( gUnitTemplates["archer"].create("h04"));
 
 }
 
