@@ -15,7 +15,7 @@ const MAP_HEIGHT = 16;
 
 // ----- Global Variables -----------------------------------------------------
 let gTileMap = new TileMap();
-let gStructureTemplates = [];
+let gStructureTemplates = {};
 let gUnitTemplates = [];
 let gPlayer = new Player("mjm", "Draconis Imperium");
 let gImmediateOrders = [];
@@ -298,90 +298,91 @@ function buildTemplates() {
     // Build the gStructureTemplates array
     //let totalStructures = Structure.enumSTRUCTURES["total_structures"];
     //for( let index = 0; index < totalStructures; index++) {}
-    gStructureTemplates.push(new Structure("capital", "capital"));
-    gStructureTemplates[0].addTerrain("field");
-    gStructureTemplates[0].addTerrain("forest");
-    gStructureTemplates[0].addTerrain("hill");
-    gStructureTemplates[0].addTerrain("mountain");
+    gStructureTemplates["capital"] = new Structure("capital", "capital");
+    gStructureTemplates["capital"].addTerrain("field");
+    gStructureTemplates["capital"].addTerrain("forest");
+    gStructureTemplates["capital"].addTerrain("hill");
+    gStructureTemplates["capital"].addTerrain("mountain");
+    gStructureTemplates["capital"].description = 'Should not be shown in list';
 
-    gStructureTemplates.push( new Structure("farm", "farm"));
-    gStructureTemplates[1].addTerrain("field");
-    gStructureTemplates[1].addTerrain("hill");
-    gStructureTemplates[1].laborCost = 5;
-    gStructureTemplates[1].buildCost = {
+    gStructureTemplates["farm"] =  new Structure("farm", "farm");
+    gStructureTemplates["farm"].addTerrain("field");
+    gStructureTemplates["farm"].addTerrain("hill");
+    gStructureTemplates["farm"].laborCost = 5;
+    gStructureTemplates["farm"].buildCost = {
         wood: 3,
         food: 5,
         stone: 3,
     };
-    gStructureTemplates[1].description = 'Produces food every spring and autumn';
+    gStructureTemplates["farm"].description = 'Produces food every spring and autumn';
 
-    gStructureTemplates.push( new Structure("lumbermill", "lumbermill"));
-    gStructureTemplates[2].addTerrain("forest");
-    gStructureTemplates[2].laborCost = 3;
-    gStructureTemplates[2].buildCost = {
+    gStructureTemplates["lumbermill"] = new Structure("lumbermill", "lumbermill");
+    gStructureTemplates["lumbermill"].addTerrain("forest");
+    gStructureTemplates["lumbermill"].laborCost = 3;
+    gStructureTemplates["lumbermill"].buildCost = {
         wood: 2,
         stone: 3,
         horses: 1,
     };
-    gStructureTemplates[2].description = 'Regularly produces wood';
+    gStructureTemplates["lumbermill"].description = 'Regularly produces wood';
 
-    gStructureTemplates.push( new Structure("ranch", "ranch"));
-    gStructureTemplates[3].addTerrain("field");
-    gStructureTemplates[3].laborCost = 2;
-    gStructureTemplates[3].buildCost = {
+    gStructureTemplates["ranch"] = new Structure("ranch", "ranch");
+    gStructureTemplates["ranch"].addTerrain("field");
+    gStructureTemplates["ranch"].laborCost = 2;
+    gStructureTemplates["ranch"].buildCost = {
         wood: 5,
         stone: 3,
         horses: 1,
     };
-    gStructureTemplates[3].description = 'Produces horses';
+    gStructureTemplates["ranch"].description = 'Produces horses';
 
-    gStructureTemplates.push( new Structure("lodge", "lodge"));
-    gStructureTemplates[4].addTerrain("forest");
-    gStructureTemplates[4].laborCost = 3;
-    gStructureTemplates[4].buildCost = {
+    gStructureTemplates["lodge"] = new Structure("lodge", "lodge");
+    gStructureTemplates["lodge"].addTerrain("forest");
+    gStructureTemplates["lodge"].laborCost = 3;
+    gStructureTemplates["lodge"].buildCost = {
         wood: 2,
         iron: 3,
         leather: 2,
     };
-    gStructureTemplates[4].description = 'Regularly produces some food and leather';
+    gStructureTemplates["lodge"].description = 'Regularly produces some food and leather';
 
-    gStructureTemplates.push( new Structure("mine", "mine"));
-    gStructureTemplates[5].addTerrain("field");
-    gStructureTemplates[5].addTerrain("hill");
-    gStructureTemplates[5].addTerrain("mountain");
-    gStructureTemplates[5].laborCost = 5;
-    gStructureTemplates[5].buildCost = {
+    gStructureTemplates["mine"] = new Structure("mine", "mine");
+    gStructureTemplates["mine"].addTerrain("field");
+    gStructureTemplates["mine"].addTerrain("hill");
+    gStructureTemplates["mine"].addTerrain("mountain");
+    gStructureTemplates["mine"].laborCost = 5;
+    gStructureTemplates["mine"].buildCost = {
         wood: 5,
         stone: 3,
         iron: 2,
     };
-    gStructureTemplates[5].description = 'Regularly produces iron';
+    gStructureTemplates["mine"].description = 'Regularly produces iron';
 
-    gStructureTemplates.push(new Structure("depot", "depot"));
-    gStructureTemplates[6].addTerrain("field");
-    gStructureTemplates[6].addTerrain("forest");
-    gStructureTemplates[6].addTerrain("hill");
-    gStructureTemplates[6].addTerrain("mountain");
-    gStructureTemplates[6].laborCost = 15;
-    gStructureTemplates[6].buildCost = {
+    gStructureTemplates["depot"] = new Structure("depot", "depot");
+    gStructureTemplates["depot"].addTerrain("field");
+    gStructureTemplates["depot"].addTerrain("forest");
+    gStructureTemplates["depot"].addTerrain("hill");
+    gStructureTemplates["depot"].addTerrain("mountain");
+    gStructureTemplates["depot"].laborCost = 15;
+    gStructureTemplates["depot"].buildCost = {
         stone: 10,
         wood: 10,
         iron: 10,
     };
-    gStructureTemplates[6].description = 'Creates a new supply point for provisioning armies';
+    gStructureTemplates["depot"].description = 'Creates a new supply point for provisioning armies';
 
-    gStructureTemplates.push(new Structure("fort", "fort"));
-    gStructureTemplates[7].addTerrain("field");
-    gStructureTemplates[7].addTerrain("forest");
-    gStructureTemplates[7].addTerrain("hill");
-    gStructureTemplates[7].addTerrain("mountain");
-    gStructureTemplates[7].laborCost = 20;
-    gStructureTemplates[7].buildCost = {
+    gStructureTemplates["fort"] = new Structure("fort", "fort");
+    gStructureTemplates["fort"].addTerrain("field");
+    gStructureTemplates["fort"].addTerrain("forest");
+    gStructureTemplates["fort"].addTerrain("hill");
+    gStructureTemplates["fort"].addTerrain("mountain");
+    gStructureTemplates["fort"].laborCost = 20;
+    gStructureTemplates["fort"].buildCost = {
         stone: 30,
         wood: 35,
         iron: 20,
     };
-    gStructureTemplates[7].description = 'Defends and area and allows training of units';
+    gStructureTemplates["fort"].description = 'Defends and area and allows training of units';
 
     /* new Unit(
         pId, this.name, this.meleeAttack, this.missileAttack, this.meleeDefense, this.missileDefense,
@@ -410,7 +411,7 @@ function buildTemplates() {
 //----- buildStructures -------------------------------------------------------
 function buildStructures() {
     // Build the Capital Structure
-    gTileMap.selectTile(4,4).buildStructure(gStructureTemplates[0]);
+    gTileMap.selectTile(4,4).buildStructure(gStructureTemplates["capital"]);
 
     // Connect garrison to Capital and populate it
     gTileMap.selectTile(4,4).garrison = new Garrison(4,4);
@@ -420,18 +421,18 @@ function buildStructures() {
 
 
     // build farms
-    gTileMap.selectTile(3,3).buildStructure(gStructureTemplates[1]);
+    gTileMap.selectTile(3,3).buildStructure(gStructureTemplates["farm"]);
     gTileMap.selectTile(3,3).buildRoad();
 
-    gTileMap.selectTile(3,4).buildStructure(gStructureTemplates[1]);
+    gTileMap.selectTile(3,4).buildStructure(gStructureTemplates["farm"]);
     gTileMap.selectTile(3,4).buildRoad();
 
     // build mine
-    gTileMap.selectTile(4,7).buildStructure(gStructureTemplates[5]);
+    gTileMap.selectTile(4,7).buildStructure(gStructureTemplates["mine"]);
     gTileMap.selectTile(4,7).buildRoad();
 
     // build fort
-    gTileMap.selectTile(6,5).buildStructure(gStructureTemplates[7]);
+    gTileMap.selectTile(6,5).buildStructure(gStructureTemplates["fort"]);
     gTileMap.selectTile(6,5).buildRoad();
 
     // Connect garrison to fort
@@ -444,19 +445,19 @@ function buildStructures() {
     gTileMap.selectTile(6,5).garrison.createUnit(gUnitTemplates[3], "g04");
 
     // build depot
-    gTileMap.selectTile(6,7).buildStructure(gStructureTemplates[6]);
+    gTileMap.selectTile(6,7).buildStructure(gStructureTemplates["depot"]);
     gTileMap.selectTile(6,7).buildRoad();
 
     // build ranch
-    gTileMap.selectTile(8,7).buildStructure(gStructureTemplates[3]);
+    gTileMap.selectTile(8,7).buildStructure(gStructureTemplates["ranch"]);
     gTileMap.selectTile(8,7).buildRoad();
 
     // build lodge
-    gTileMap.selectTile(9,2).buildStructure(gStructureTemplates[4]);
+    gTileMap.selectTile(9,2).buildStructure(gStructureTemplates["lodge"]);
     gTileMap.selectTile(9,2).buildRoad();
 
     // build lumbermill
-    gTileMap.selectTile(9,4).buildStructure(gStructureTemplates[2]);
+    gTileMap.selectTile(9,4).buildStructure(gStructureTemplates["lumbermill"]);
     gTileMap.selectTile(9,4).buildRoad();
 
     // build roads
@@ -505,6 +506,7 @@ function buildPlayer() {
 
 }
 
+//----- loadClickHandlers() ---------------------------------------------------
 // Load button click handlers
 function loadClickHandlers() {
     // Load the click event handler for claimTileButton
