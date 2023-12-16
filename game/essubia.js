@@ -50,6 +50,11 @@ window.addEventListener('load', function() {
             currentTile.dataset.row = row;
             currentTile.dataset.col = col;
             currentTile.setAttribute('class', 'tile');
+
+            // Sightly Darken Uncontrolled Tiles
+            if ( tileData.owner !== gPlayer.name) {
+                currentTile.style.opacity = 0.9;
+            }
             mapRow.appendChild(currentTile);
 
            let tileCanvas = document.createElement('canvas');
@@ -110,8 +115,6 @@ window.addEventListener('load', function() {
             
            }
 
-           
-
            // Add the click event
            currentTile.addEventListener('click', readTile);
         }
@@ -167,7 +170,16 @@ function readTile(pEvent) {
     // Fill in tileStructure block
     let showStructure = document.getElementById('showStructure');
     let buildButton = document.getElementById('buildStructureButton');
-    if (tileData.structure === null) {
+
+    if (tileData.structure !== null) {
+        showStructure.style.display = 'inline-block';
+        buildButton.style.display = 'none';
+        showStructure.innerText = tileData.structure.name;
+    } else if (tileData.buildingStructure === true) {
+        showStructure.style.display = 'inline-block';
+        buildButton.style.display = 'none';
+        showStructure.innerText = "Building New Structure";
+    } else {
         showStructure.style.display = 'none';
         buildButton.style.display = "inline-block";
         if ( isTileOwner) {
@@ -177,12 +189,8 @@ function readTile(pEvent) {
         } else {
             buildButton.disabled = true;
         }
-    } else {
-        showStructure.style.display = 'inline-block';
-        buildButton.style.display = 'none';
-        showStructure.innerText = tileData.structure.name;
     }
-
+    
     // Check for road
     let showRoad = document.getElementById('showRoad');
     let buildRoad = document.getElementById('buildRoadButton');
@@ -577,7 +585,7 @@ console.log(gBuildOrders);
              }
     });
 
-    /*
+    
     // Set up the Build Structure menu
     document.getElementById('buildStructureButton').addEventListener('click', (pEvent) => {
         let targetButton = pEvent.currentTarget;
@@ -587,8 +595,95 @@ console.log(gBuildOrders);
         document.getElementById('structureListBox').style.display = 'block';
 
         let selectionList = document.getElementById('structureList');
+        for (const structureId in gStructureTemplates) {
+            let currentStructure = gStructureTemplates[structureId];
 
-        for ()
+            // Skip the capital structure
+            if (currentStructure.name == 'capital') {
+                continue;
+            }
+
+            // Skip if the tile terrain is not available for buiding the structure
+console.log(document.getElementById('mapTable').rows[tileY].cells[tileX].terrain);
+console.log(gTileMap.selectTile(tileX, tileY).terrain);
+console.log(currentStructure.terrains);
+            if ( !currentStructure.terrains.includes(gTileMap.selectTile(tileX, tileY).terrain) ) {
+                continue;
+            }
+
+            let selection = document.createElement('div');
+            selection.classList.add('structureSelection');
+            selection.dataset.buildId = currentStructure.id;
+            selection.dataset.col = tileX;
+            selection.dataset.row = tileY;
+
+            // Display the struture's information
+            let dataDisplay = document.createElement('div');
+            dataDisplay.classList.add('selectionData');
+            dataDisplay.innerText = currentStructure.name + '\n\n' + currentStructure.description;
+            selection.appendChild(dataDisplay);
+
+            // Display the structure's costs
+            let canAfford = true;
+            let costDisplay = document.createElement('ul');
+            costDisplay.classList.add('selectionCost');
+            let laborField = document.createElement('li');
+            if (gPlayer.labor < currentStructure.laborCost) {
+                laborField.style.color = 'red';
+                canAfford = false;
+            }
+            laborField.innerText = "  " + currentStructure.laborCost + " labor";
+            costDisplay.appendChild(laborField);
+
+            for (const resource in currentStructure.buildCost) {
+                let field = document.createElement('li');
+                if (gPlayer.resources[resource] < currentStructure.buildCost[resource]) {
+                    field.style.color = 'red';
+                    canAfford = false;
+                }
+                field.innerText = "  " + currentStructure.buildCost[resource] + " " + resource;
+                costDisplay.appendChild(field);
+            }
+            selection.appendChild(costDisplay);
+
+            if (canAfford) {
+                selection.addEventListener('click', (pEvent) => {
+                    let targetSelection = pEvent.currentTarget;
+                    let buildId = targetSelection.dataset.buildId;
+                    let xPos = targetSelection.dataset.col;
+                    let yPos = targetSelection.dataset.row;
+
+                    gBuildOrders.push( new BuildOrder('buildStructure', xPos, yPos, buildId));
+
+                    // Subtract Costs
+                    gPlayer.labor -= gStructureTemplates[buildId].laborCost;
+                    for (const resource in gStructureTemplates[buildId].buildCost) {
+                        gPlayer.loseResource(resource, gStructureTemplates[buildId].buildCost[resource]);
+                    }
+                    updateResources();
+
+                    gTileMap.selectTile(xPos, yPos).buildingStructure = true;
+
+                    document.getElementById('structureListBox').style.display = 'none';
+                    document.getElementById('structureList').innerHTML = "";
+                    document.getElementById('mapTable').rows[yPos].cells[xPos].click();
+                });
+            } else {
+                selection.style.opacity = 0.6;
+                selection.style.cursor = 'not-allowed';
+            }
+
+
+            selectionList.appendChild(selection);
+        }
+
+        
     });
-    */
+
+    // Add the Close Build Structure menu click handler
+    document.getElementById('closeStructure').addEventListener('click', (pEvent) => {
+        document.getElementById('structureListBox').style.display = "none";
+        document.getElementById('structureList').innerHTML = "";
+    });
+    
 }
