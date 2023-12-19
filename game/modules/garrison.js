@@ -5,6 +5,7 @@ export class Garrison {
         this.xPos = pX;
         this.yPos = pY;
         this.unitList = {};
+        this.trainingUnit = "";
     }
 
     createUnit = (pUnit, pId) => {
