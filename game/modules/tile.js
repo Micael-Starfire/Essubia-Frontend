@@ -15,7 +15,7 @@ export class Tile {
         this.urbanization = 0;
         this.population = 0;
         this.structure = null;
-        this.buildingStructure = false;
+        this.buildingStructure = "";
         this.garrison = null;
         this.army = null;
         this.improvingQuality = false;

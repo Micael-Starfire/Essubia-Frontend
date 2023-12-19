@@ -175,10 +175,10 @@ function readTile(pEvent) {
         showStructure.style.display = 'inline-block';
         buildButton.style.display = 'none';
         showStructure.innerText = tileData.structure.name;
-    } else if (tileData.buildingStructure === true) {
+    } else if (tileData.buildingStructure !== "") {
         showStructure.style.display = 'inline-block';
         buildButton.style.display = 'none';
-        showStructure.innerText = "Building New Structure";
+        showStructure.innerText = "Building " + tileData.buildingStructure;
     } else {
         showStructure.style.display = 'none';
         buildButton.style.display = "inline-block";
@@ -604,9 +604,6 @@ console.log(gBuildOrders);
             }
 
             // Skip if the tile terrain is not available for buiding the structure
-console.log(document.getElementById('mapTable').rows[tileY].cells[tileX].terrain);
-console.log(gTileMap.selectTile(tileX, tileY).terrain);
-console.log(currentStructure.terrains);
             if ( !currentStructure.terrains.includes(gTileMap.selectTile(tileX, tileY).terrain) ) {
                 continue;
             }
@@ -646,6 +643,7 @@ console.log(currentStructure.terrains);
             }
             selection.appendChild(costDisplay);
 
+            // Add the Selection click handlers
             if (canAfford) {
                 selection.addEventListener('click', (pEvent) => {
                     let targetSelection = pEvent.currentTarget;
@@ -662,7 +660,8 @@ console.log(currentStructure.terrains);
                     }
                     updateResources();
 
-                    gTileMap.selectTile(xPos, yPos).buildingStructure = true;
+                    // Set the Tile's buildingStructure to the structure's name
+                    gTileMap.selectTile(xPos, yPos).buildingStructure = gStructureTemplates[buildId].name;
 
                     document.getElementById('structureListBox').style.display = 'none';
                     document.getElementById('structureList').innerHTML = "";

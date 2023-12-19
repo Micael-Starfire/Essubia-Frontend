@@ -248,7 +248,6 @@ ul {
 .selectionData {
     margin-top: 1vh;
     background-color: navy;
-    display: inline-block;
     float: left;
     left: 0;
     width: 25vw;
@@ -257,7 +256,6 @@ ul {
 .selectionCost {
     margin-top: 1vh;
     background-color: blue;
-    display: inline-block;
     float: right;
     vertical-align: middle;
     width: 16vw;
