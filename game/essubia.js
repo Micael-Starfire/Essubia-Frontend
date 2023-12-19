@@ -20,6 +20,7 @@ let gUnitTemplates = {};
 let gPlayer = new Player("mjm", "Draconis Imperium");
 let gImmediateOrders = [];
 let gBuildOrders = [];
+let gMenuOpen = false;
 
 //import {loadClickHandlers} from './modules/loadclickhandlers.js';
 // ----- Main Function --------------------------------------------------------
@@ -131,6 +132,11 @@ window.addEventListener('load', function() {
 
 //----- readTile --------------------------------------------------------------
 function readTile(pEvent) {
+    // If a menu is open, do nothing
+    if (gMenuOpen) {
+        return;
+    }
+
     let targetTile = pEvent.currentTarget;
     let tileX = targetTile.dataset.col;
     let tileY = targetTile.dataset.row;
@@ -519,6 +525,11 @@ function buildPlayer() {
 function loadClickHandlers() {
     // Load the click event handler for claimTileButton
     document.getElementById('claimTileButton').addEventListener('click', (pEvent) => {
+        // If a menu is open, do nothing
+        if (gMenuOpen) {
+            return;
+        }
+
         let targetButton = pEvent.currentTarget;
         let tileX = targetButton.dataset.col;
         let tileY = targetButton.dataset.row;
@@ -541,6 +552,11 @@ console.log(gBuildOrders);
 
     // Load the click event handler for buildRoadButton
     document.getElementById('buildRoadButton').addEventListener('click', (pEvent) => {
+        // If a menu is open, do nothing
+        if (gMenuOpen) {
+            return;
+        }
+
         let targetButton = pEvent.currentTarget;
         let tileX = targetButton.dataset.col;
         let tileY = targetButton.dataset.row;
@@ -565,6 +581,11 @@ console.log(gBuildOrders);
 
     // Load the click event handler for improveQuality
     document.getElementById('improveQualityButton').addEventListener( 'click', (pEvent) => {
+        // If a menu is open, do nothing
+        if (gMenuOpen) {
+            return;
+        }
+
         let targetButton = pEvent.currentTarget;
         let tileX = targetButton.dataset.col;
         let tileY = targetButton.dataset.row;
@@ -588,6 +609,14 @@ console.log(gBuildOrders);
     
     // Set up the Build Structure menu
     document.getElementById('buildStructureButton').addEventListener('click', (pEvent) => {
+        // If a menu is open, do nothing
+        if (gMenuOpen) {
+            return;
+        }
+
+        // This handler opens a menu
+        gMenuOpen = true;
+
         let targetButton = pEvent.currentTarget;
         let tileX = targetButton.dataset.col;
         let tileY = targetButton.dataset.row;
@@ -663,6 +692,8 @@ console.log(gBuildOrders);
                     // Set the Tile's buildingStructure to the structure's name
                     gTileMap.selectTile(xPos, yPos).buildingStructure = gStructureTemplates[buildId].name;
 
+                    // Close the menu
+                    gMenuOpen = false;
                     document.getElementById('structureListBox').style.display = 'none';
                     document.getElementById('structureList').innerHTML = "";
                     document.getElementById('mapTable').rows[yPos].cells[xPos].click();
@@ -672,7 +703,6 @@ console.log(gBuildOrders);
                 selection.style.cursor = 'not-allowed';
             }
 
-
             selectionList.appendChild(selection);
         }
 
@@ -681,6 +711,7 @@ console.log(gBuildOrders);
 
     // Add the Close Build Structure menu click handler
     document.getElementById('closeStructure').addEventListener('click', (pEvent) => {
+        gMenuOpen = false;
         document.getElementById('structureListBox').style.display = "none";
         document.getElementById('structureList').innerHTML = "";
     });
