@@ -715,5 +715,63 @@ console.log(gBuildOrders);
         document.getElementById('structureListBox').style.display = "none";
         document.getElementById('structureList').innerHTML = "";
     });
-    
+
+    // Set up the Garrison Management Menu
+    document.getElementById('manageGarrisonButton').addEventListener('click', (pEvent) => {
+        // If a menu is open, do nothing
+        if (gMenuOpen) {
+            return;
+        }
+
+        // This handler opens a menu
+        gMenuOpen = true;
+        
+        let targetButton = pEvent.currentTarget;
+        let tileX = targetButton.dataset.col;
+        let tileY = targetButton.dataset.row;
+        let tileData = gTileMap.selectTile(tileX, tileY);
+
+        document.getElementById('garrisonListBox').style.display = 'block';
+
+        // Assign the Garrison management command buttons
+        /*
+        let trainUnit = document.getElementById('trainUnitButton')
+        if (tileData.garrison.trainingUnit == "") {
+            trainUnit.disabled = false;
+        } else {
+            trainUnit.disabled = true;
+        }
+
+        let createArmy = document.getElementById('createArmyButton');
+        if (tileData.army == null) {
+            createArmy.disabled = false;
+        } else {
+            createArmy.disabled = true;
+        }
+        */
+
+        let garrisonList = document.getElementById('garrisonList');
+        let units = tileData.garrison.unitList;
+        for (const unit in units) {
+            let currentUnit = units[unit];
+
+            let unitDisplay = document.createElement('li');
+            unitDisplay.id = unit;
+            unitDisplay.classList.add('unitSelection');
+            unitDisplay.dataset.id = unit;
+            unitDisplay.dataset.col = tileX;
+            unitDisplay.dataset.row = tileX;
+            unitDisplay.innerText = currentUnit.name + '\n\nCoshesion: ' + currentUnit.cohesion;
+
+            garrisonList.appendChild(unitDisplay);
+        }
+
+    });
+
+    // Add the Close Garrison Management click handler
+    document.getElementById('closeGarrison').addEventListener('click', (pEvent) => {
+        gMenuOpen = false;
+        document.getElementById('garrisonListBox').style.display = "none";
+        document.getElementById('garrisonList').innerHTML = "";
+    });
 }
