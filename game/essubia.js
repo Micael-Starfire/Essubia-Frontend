@@ -744,7 +744,7 @@ console.log(gBuildOrders);
         } else {
             trainUnit.disabled = true;
             document.getElementById('currentlyTraining').innerText = " " +
-                    gUnitTemplates[tileData.garrison.trainingUint].name;
+                    gUnitTemplates[tileData.garrison.trainingUnit].name;
         }
 
         let createArmy = document.getElementById('createArmyButton');
@@ -778,7 +778,60 @@ console.log(gBuildOrders);
     // Add the Close Garrison Management click handler
     document.getElementById('closeGarrison').addEventListener('click', (pEvent) => {
         gMenuOpen = false;
+        document.getElementById('closeTrainUnit').click();
         document.getElementById('garrisonListBox').style.display = "none";
         document.getElementById('garrisonList').innerHTML = "";
+
+    });
+
+    // Add the Train Unit click event listener
+    document.getElementById('trainUnitButton').addEventListener( 'click', (pEvent) => {
+        // Close the create army menu
+        //document.getElementById('closeCreateArmy').click();
+
+        let targetButton = pEvent.currentTarget;
+        let tileX = targetButton.dataset.col;
+        let tileY = targetButton.dataset.row;
+        let tileData = gTileMap.selectTile(tileX, tileY);
+
+        document.getElementById('unitListBox').style.display = 'block';
+
+        let unitList = document.getElementById('unitList');
+        for (const unitId in gUnitTemplates) {
+            let currentUnit = gUnitTemplates[unitId];
+
+            let selection = document.createElement('li');
+            selection.classList.add('unitSelection');
+            selection.dataset.buildId = unitId;
+            selection.dataset.col = tileX;
+            selection.dataset.row = tileY;
+            selection.innerText = currentUnit.name + '\n\nMax Coshesion: ' + currentUnit.cohesion;
+
+            selection.addEventListener('click', (pEvent) => {
+                let targetSelection = pEvent.currentTarget;
+                let buildId = targetSelection.dataset.buildId;
+                let xPos = targetSelection.dataset.col;
+                let yPos = targetSelection.dataset.row;
+
+                gBuildOrders.push(new BuildOrder('trainUnit', xPos, yPos, buildId));
+                gTileMap.selectTile(xPos, yPos).garrison.trainingUnit = buildId;
+
+                document.getElementById('unitListBox').style.display = "none";
+                document.getElementById('unitList').innerHTML = "";
+                document.getElementById('closeGarrison').click();
+                document.getElementById('manageGarrisonButton').click();
+
+            });
+
+            unitList.appendChild(selection);
+
+        }
+
+    });
+
+    // Add the close Train Unit click handler
+    document.getElementById('closeTrainUnit').addEventListener('click', (pEvent) =>{
+        document.getElementById('unitListBox').style.display = "none";
+        document.getElementById('unitList').innerHTML = "";
     });
 }

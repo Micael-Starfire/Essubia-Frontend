@@ -303,6 +303,28 @@ ul {
     background-color: sienna;
 }
 
+#unitListBox {
+    top: 15vh;
+    left: 56vw;
+    position: absolute;
+    width: 30vw;
+    height: 70vh;
+    display: none;
+    border: 1vmin solid gold;
+    background-color: black;
+}
+
+#unitList {
+    position: absolute;
+    top: 10vh;
+    left: 2vw;
+    height: 60vh;
+    width: 23vw;
+    overflow-y: scroll;
+    overflow-x:hidden;
+    background-color: sienna;
+}
+
 .unitSelection {
     height: 15vh;
     width: 42vw;
