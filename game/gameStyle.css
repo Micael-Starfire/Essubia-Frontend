@@ -274,6 +274,24 @@ ul {
     background-color: black;
 }
 
+#trainUnitButton {
+    position: absolute;
+    top: 2vh;
+    left: 2vw;
+}
+
+#createArmyButton {
+    position: absolute;
+    top: 2vh;
+    right: 5vw;
+}
+
+#trainingInfoBox {
+    position: absolute;
+    top: 6vh;
+    left: 2vw;
+}
+
 #garrisonList {
     position: absolute;
     top: 10vh;

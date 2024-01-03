@@ -1,6 +1,6 @@
 import { MapMover } from './modules/mapmover.js';
 import { Tile } from './modules/tile.js';
-import { TileMap } from './modules/tileMap.js';
+import { TileMap } from './modules/tilemap.js';
 import { Structure } from './modules/structure.js';
 import { Unit } from './modules/unit.js';
 import { Army } from './modules/army.js';
@@ -734,21 +734,28 @@ console.log(gBuildOrders);
         document.getElementById('garrisonListBox').style.display = 'block';
 
         // Assign the Garrison management command buttons
-        /*
+        
         let trainUnit = document.getElementById('trainUnitButton')
         if (tileData.garrison.trainingUnit == "") {
             trainUnit.disabled = false;
+            trainUnit.dataset.col = tileX;
+            trainUnit.dataset.row = tileY;
+            document.getElementById('currentlyTraining').innerText = " nothing";
         } else {
             trainUnit.disabled = true;
+            document.getElementById('currentlyTraining').innerText = " " +
+                    gUnitTemplates[tileData.garrison.trainingUint].name;
         }
 
         let createArmy = document.getElementById('createArmyButton');
         if (tileData.army == null) {
             createArmy.disabled = false;
+            createArmy.dataset.col = tileX;
+            createArmy.dataset.row = tileY;
         } else {
             createArmy.disabled = true;
         }
-        */
+        
 
         let garrisonList = document.getElementById('garrisonList');
         let units = tileData.garrison.unitList;
