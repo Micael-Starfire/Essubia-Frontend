@@ -778,7 +778,20 @@ console.log(gBuildOrders);
     // Add the Close Garrison Management click handler
     document.getElementById('closeGarrison').addEventListener('click', (pEvent) => {
         gMenuOpen = false;
-        document.getElementById('closeTrainUnit').click();
+
+        // Close Train Unit if open
+        if( document.getElementById('unitListBox').style.display == "block") {
+            document.getElementById('unitListBox').style.display = "none";
+            document.getElementById('unitList').innerHTML = "";
+            //document.getElementById('closeTrainUnit').click();
+        }
+        // Close Create Army if open
+        if (document.getElementById('newArmyBox').style.display == "block") {
+            document.getElementById('newArmyBox').style.display = "none";
+            document.getElementById('newArmy').innerHTML = "";
+            //document.getElementById('closeNewArmy').click();
+        }
+        
         document.getElementById('garrisonListBox').style.display = "none";
         document.getElementById('garrisonList').innerHTML = "";
 
@@ -834,4 +847,53 @@ console.log(gBuildOrders);
         document.getElementById('unitListBox').style.display = "none";
         document.getElementById('unitList').innerHTML = "";
     });
+
+    // Add the Create Army click handler
+    document.getElementById('createArmyButton').addEventListener('click', (pEvent) => {
+        // Get Button Attributes
+        let targetButton = pEvent.currentTarget;
+        let tileX = targetButton.dataset.col;
+        let tileY = targetButton.dataset.row;
+
+        // Close the train unit menu, if open
+        if( document.getElementById('unitListBox').style.display == "block") {
+            document.getElementById('closeTrainUnit').click();
+        }
+
+        // Open the Create Army Box
+        document.getElementById('newArmyBox').style.display = "block";
+
+        // Click handlers that allow for transfering units between
+        // Army and Garrison
+        let garrisonList = document.getElementById('garrisonList');
+        let newArmy = document.getElementById('newArmy');
+        for (let unit of garrisonList.children) {
+            unit.dataset.inArmy = false;
+            unit.addEventListener('click', (pEvent) => {
+                let currentUnit = pEvent.currentTarget;
+console.log(currentUnit.dataset.inArmy);
+                if (currentUnit.dataset.inArmy == "true") {
+                    currentUnit.dataset.inArmy = false;
+                    newArmy.removeChild(currentUnit);
+                    garrisonList.appendChild(currentUnit);
+                } else {
+                    currentUnit.dataset.inArmy = true;
+                    garrisonList.removeChild(currentUnit);
+                    newArmy.appendChild(currentUnit);
+                }
+            });
+        }
+
+    });
+
+    // Add the Close Create Army click handler
+    document.getElementById('closeNewArmy').addEventListener('click', (pEvent) => {
+        document.getElementById('newArmyBox').style.display = "none";
+        document.getElementById('newArmy').innerHTML = "";
+
+        //clocse and reopen garrison management
+        document.getElementById('closeGarrison').click();
+        document.getElementById('manageGarrisonButton').click();
+    });
 }
+

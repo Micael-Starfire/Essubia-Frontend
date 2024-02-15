@@ -332,6 +332,27 @@ ul {
     vertical-align: middle;
 }
 
+#newArmyBox {
+    top: 15vh;
+    left: 56vw;
+    position: absolute;
+    width: 30vw;
+    height: 70vh;
+    display: none;
+    border: 1vmin solid gold;
+    background-color: black;
+}
+
+#newArmy {
+    position: absolute;
+    top: 10vh;
+    left: 2vw;
+    height: 60vh;
+    width: 23vw;
+    overflow-y: scroll;
+    overflow-x:hidden;
+    background-color: sienna;
+}
 
 .close {
     position: absolute;
