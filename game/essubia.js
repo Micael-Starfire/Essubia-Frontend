@@ -799,7 +799,10 @@ console.log(gBuildOrders);
 
     // Add the Train Unit click event listener
     document.getElementById('trainUnitButton').addEventListener( 'click', (pEvent) => {
-        // Close the create army menu
+        // Close the create army menu f open
+        if (document.getElementById('newArmyBox').style.display == 'block') {
+            document.getElementById('closeNewArmy').click();
+        }
         //document.getElementById('closeCreateArmy').click();
 
         let targetButton = pEvent.currentTarget;
@@ -871,7 +874,6 @@ console.log(gBuildOrders);
             unit.dataset.inArmy = false;
             unit.addEventListener('click', (pEvent) => {
                 let currentUnit = pEvent.currentTarget;
-console.log(currentUnit.dataset.inArmy);
                 if (currentUnit.dataset.inArmy == "true") {
                     currentUnit.dataset.inArmy = false;
                     newArmy.removeChild(currentUnit);
