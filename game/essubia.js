@@ -18,6 +18,7 @@ let gTileMap = new TileMap();
 let gStructureTemplates = {};
 let gUnitTemplates = {};
 let gPlayer = new Player("mjm", "Draconis Imperium");
+let gArmyList = {};
 let gImmediateOrders = [];
 let gBuildOrders = [];
 let gMenuOpen = false;
@@ -107,8 +108,8 @@ window.addEventListener('load', function() {
            }
 
            // Display Army presence
-           if (tileData.army != null) {
-            if (tileData.army.owner === gPlayer.id) {
+           if (tileData.armyId != "") {
+            if (gArmyList[tileData.armyId].owner === gPlayer.id) {
                 context.drawImage(document.getElementById('friendlyArmy'), 0, 0, tileCanvas.width, tileCanvas.height);
             } else {
                 context.drawImage(document.getElementById('enemyArmy'), 0, 0, tileCanvas.width, tileCanvas.height);
@@ -245,8 +246,9 @@ function readTile(pEvent) {
     }
 
     // Manage the Army Info Box
-    let tileArmy = tileData.army;
-    if (tileArmy !== null) {
+    
+    if (tileData.armyId !== "") {
+        let tileArmy = gArmyList[tileData.armyId];
         let infoBox = document.getElementById('armyInfoBox')
         infoBox.style.display = 'block';
         let isPlayerArmy = (tileArmy.owner === gPlayer.id);
@@ -486,26 +488,29 @@ function buildStructures() {
     gTileMap.selectTile(8,6).buildRoad();
 
     // Create field army
-    gTileMap.selectTile(8,6).army = new Army("Cavalry Force", "field01", "mjm", 8, 6);
-    gTileMap.selectTile(8,6).army.addUnit( gUnitTemplates["cavalry"].create("a01"));
-    gTileMap.selectTile(8,6).army.addUnit( gUnitTemplates["cavalry"].create("a02"));
-    gTileMap.selectTile(8,6).army.addUnit( gUnitTemplates["cavalry"].create("a03"));
-    gTileMap.selectTile(8,6).army.addUnit( gUnitTemplates["cavalry"].create("a04"));
+    gTileMap.selectTile(8,6).armyId = "field01";
+    gArmyList["field01"] = new Army("Cavalry Force", "field01", "mjm", 8, 6);
+    gArmyList["field01"].addUnit( gUnitTemplates["cavalry"].create("a01"));
+    gArmyList["field01"].addUnit( gUnitTemplates["cavalry"].create("a02"));
+    gArmyList["field01"].addUnit( gUnitTemplates["cavalry"].create("a03"));
+    gArmyList["field01"].addUnit( gUnitTemplates["cavalry"].create("a04"));
 
     // Create second field army
-    gTileMap.selectTile(9,9).army = new Army("Expeditionary Force", "field02", "mjm", 9, 9);
-    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates["infantry"].create("b01"));
-    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates["infantry"].create("b02"));
-    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates["archer"].create("b03"));
-    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates["archer"].create("b04"));
-    gTileMap.selectTile(9,9).army.addUnit( gUnitTemplates["cavalry"].create("b05"));
+    gTileMap.selectTile(9,9).armyId = "field02";
+    gArmyList["field02"] = new Army("Expeditionary Force", "field02", "mjm", 9, 9);
+    gArmyList["field02"].addUnit( gUnitTemplates["infantry"].create("b01"));
+    gArmyList["field02"].addUnit( gUnitTemplates["infantry"].create("b02"));
+    gArmyList["field02"].addUnit( gUnitTemplates["archer"].create("b03"));
+    gArmyList["field02"].addUnit( gUnitTemplates["archer"].create("b04"));
+    gArmyList["field02"].addUnit( gUnitTemplates["cavalry"].create("b05"));
 
     // Create hostile army
-    gTileMap.selectTile(10,7).army = new Army("Cavalry Force", "hostile01", "other", 10, 7);
-    gTileMap.selectTile(10,7).army.addUnit( gUnitTemplates["infantry"].create("h01"));
-    gTileMap.selectTile(10,7).army.addUnit( gUnitTemplates["infantry"].create("h02"));
-    gTileMap.selectTile(10,7).army.addUnit( gUnitTemplates["archer"].create("h03"));
-    gTileMap.selectTile(10,7).army.addUnit( gUnitTemplates["archer"].create("h04"));
+    gTileMap.selectTile(10,7).armyId = "hostile01";
+    gArmyList["hostile01"] = new Army("Cavalry Force", "hostile01", "other", 10, 7);
+    gArmyList["hostile01"].addUnit( gUnitTemplates["infantry"].create("h01"));
+    gArmyList["hostile01"].addUnit( gUnitTemplates["infantry"].create("h02"));
+    gArmyList["hostile01"].addUnit( gUnitTemplates["archer"].create("h03"));
+    gArmyList["hostile01"].addUnit( gUnitTemplates["archer"].create("h04"));
 
 }
 
@@ -540,7 +545,6 @@ function loadClickHandlers() {
                 console.log('Insufficient Resources');
             } else {
                 gBuildOrders.push( new BuildOrder( "claimTile", tileX, tileY, ""));
-console.log(gBuildOrders);
                 gTileMap.selectTile(tileX, tileY).claimingTile = true;
                 gPlayer.labor -= 3;
                 gPlayer.loseResource('food', 3);
@@ -568,7 +572,6 @@ console.log(gBuildOrders);
                 console.log('Insufficient Resources');
             } else {
                 gBuildOrders.push( new BuildOrder('buildRoad', tileX, tileY));
-console.log(gBuildOrders);
                 gTileMap.selectTile(tileX, tileY).buildingRoad = true;
                 gPlayer.labor -= 5;
                 gPlayer.loseResource('stone', 5);
@@ -748,7 +751,7 @@ console.log(gBuildOrders);
         }
 
         let createArmy = document.getElementById('createArmyButton');
-        if (tileData.army == null) {
+        if (tileData.armyId == "") {
             createArmy.disabled = false;
             createArmy.dataset.col = tileX;
             createArmy.dataset.row = tileY;
@@ -863,6 +866,11 @@ console.log(gBuildOrders);
             document.getElementById('closeTrainUnit').click();
         }
 
+        // Pass data to the create army button
+        let newArmyButton = document.getElementById('newArmyButton');
+        newArmyButton.dataset.col = tileX;
+        newArmyButton.dataset.row = tileY;
+
         // Open the Create Army Box
         document.getElementById('newArmyBox').style.display = "block";
 
@@ -897,5 +905,66 @@ console.log(gBuildOrders);
         document.getElementById('closeGarrison').click();
         document.getElementById('manageGarrisonButton').click();
     });
+
+    
+    // Add the click handler for final Army Creation button
+    document.getElementById('newArmyButton').addEventListener('click', (pEvent) => {
+        // Get Button Attributes
+        let targetButton = pEvent.currentTarget;
+        let tileX = targetButton.dataset.col;
+        let tileY = targetButton.dataset.row;
+
+        let armyArray = [];
+        let newArmy = document.getElementById('newArmy');
+        for (let unit of newArmy.children) {
+            armyArray.push(unit.dataset.id);
+        }
+
+        // Determine army name
+        let armyName = "New Army";
+
+        // Determine the placeholder Id
+        let placeholder = "";
+        let subscript = 1;
+        let done = false;
+        while (!done) {
+            let tempId = "placeholder" + subscript.toString();
+            if (!(tempId in gArmyList)) {
+                placeholder = tempId;
+                done = true;
+            }
+            subscript += 1;
+        }
+
+        // Create the order
+        gImmediateOrders.push( new ImmediateOrder(
+            'createArmy', tileX, tileY, placeholder, armyArray, armyName
+        ));
+
+        // Create the local Army
+        gTileMap.selectTile(tileX, tileY).armyId = placeholder;
+        gArmyList[placeholder] = new Army(
+            armyName, placeholder, 'mjm', tileX, tileY );
+        let localGarrison = gTileMap.selectTile(tileX, tileY).garrison.unitList;
+
+        // Move units from the garrison to the army
+        armyArray.forEach( (unitId) => {
+            gArmyList[placeholder].addUnit(localGarrison[unitId]);
+            delete localGarrison[unitId];
+        });
+
+        // Draw the new Army on the map
+        let mapTable = document.getElementById('mapTable');
+        let currentCell = mapTable.rows[tileY].cells[tileX];
+        let tileCanvas = currentCell.getElementsByTagName('canvas')[0];
+        let tileContext = tileCanvas.getContext('2d');
+        tileContext.drawImage(document.getElementById('friendlyArmy'), 0, 0, tileCanvas.width, tileCanvas.height);
+
+        // Close the garrison menu
+        document.getElementById('closeGarrison').click();
+        
+
+    });
+    
 }
 

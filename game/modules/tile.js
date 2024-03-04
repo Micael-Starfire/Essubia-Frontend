@@ -17,7 +17,8 @@ export class Tile {
         this.structure = null;
         this.buildingStructure = "";
         this.garrison = null;
-        this.army = null;
+        //this.army = null;
+        this.armyId = "";
         this.improvingQuality = false;
     }
 
