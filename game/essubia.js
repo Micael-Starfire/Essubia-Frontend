@@ -59,63 +59,14 @@ window.addEventListener('load', function() {
             }
             mapRow.appendChild(currentTile);
 
-           let tileCanvas = document.createElement('canvas');
-           tileCanvas.setAttribute('class', 'terrain');
-           currentTile.appendChild(tileCanvas);
-           let context = tileCanvas.getContext('2d');
+            // Set up the canvas and context for the tile
+            let tileCanvas = document.createElement('canvas');
+            tileCanvas.setAttribute('class', 'terrain');
+            currentTile.appendChild(tileCanvas);
+            let context = tileCanvas.getContext('2d');
 
-           // Draw the underlying Terrain
-           let tileImage = document.getElementById(tileData.getTerrain());
-           context.drawImage(tileImage, 0, 0, tileCanvas.width, tileCanvas.height);
-
-           // Display Connecting Roads
-           if (tileData.hasRoad()) {
-            if (col >= 0) {
-                // Tile is not on left edge
-                if (row >= 0 && gTileMap.selectTile(col-1, row+1).hasRoad()) {
-                    context.drawImage(document.getElementById('roadSW'), 0, 0, tileCanvas.width, tileCanvas.height);
-                }
-                if ( gTileMap.selectTile(col-1, row).hasRoad()) {
-                    context.drawImage(document.getElementById('roadW'), 0, 0, tileCanvas.width, tileCanvas.height);
-                }
-                if ( row < gTileMap.height-1 && gTileMap.selectTile(col-1, row-1).hasRoad()) {
-                    context.drawImage(document.getElementById('roadNW'), 0, 0, tileCanvas.width, tileCanvas.height);
-                }
-            }
-            if (col < gTileMap.width-1) {
-                // Tile is not on right edge
-                if (row >= 0 && gTileMap.selectTile(col+1, row+1).hasRoad()) {
-                    context.drawImage(document.getElementById('roadSE'), 0, 0, tileCanvas.width, tileCanvas.height);
-                }
-                if ( gTileMap.selectTile(col+1, row).hasRoad()) {
-                    context.drawImage(document.getElementById('roadE'), 0, 0, tileCanvas.width, tileCanvas.height);
-                }
-                if ( row < gTileMap.height-1 && gTileMap.selectTile(col+1, row-1).hasRoad()) {
-                    context.drawImage(document.getElementById('roadNE'), 0, 0, tileCanvas.width, tileCanvas.height);
-                }
-            }
-            if (row >= 0 && gTileMap.selectTile(col, row-1).hasRoad()) {
-                context.drawImage(document.getElementById('roadN'), 0, 0, tileCanvas.width, tileCanvas.height);
-            }
-            if (row < gTileMap.height-1 && gTileMap.selectTile(col, row+1).hasRoad()) {
-                context.drawImage(document.getElementById('roadS'), 0, 0, tileCanvas.width, tileCanvas.height);
-            }
-           }
-
-           // Display Structures
-           if (tileData.structure != null) {
-            context.drawImage(document.getElementById(tileData.structure.name), 0, 0, tileCanvas.width, tileCanvas.height);
-           }
-
-           // Display Army presence
-           if (tileData.armyId != "") {
-            if (gArmyList[tileData.armyId].owner === gPlayer.id) {
-                context.drawImage(document.getElementById('friendlyArmy'), 0, 0, tileCanvas.width, tileCanvas.height);
-            } else {
-                context.drawImage(document.getElementById('enemyArmy'), 0, 0, tileCanvas.width, tileCanvas.height);
-            }
-            
-           }
+            // Draw the tile images
+            drawTile(col, row);
 
            // Add the click event
            currentTile.addEventListener('click', readTile);
@@ -293,6 +244,68 @@ function readTile(pEvent) {
     let tilePop = gTileMap.selectTile(tileX, tileY).getPopulation();
     let tileStructure = gTileMap.selectTile(tileX, tileY).getStructure();
 
+}
+
+//----- drawTile --------------------------------------------------------------
+function drawTile (col, row) {
+    let tileData = gTileMap.selectTile(col, row);
+    let mapTable = document.getElementById('mapTable');
+    let currentCell = mapTable.rows[row].cells[col];
+    let tileCanvas = currentCell.getElementsByTagName('canvas')[0];
+    let context = tileCanvas.getContext('2d');
+   
+    // Draw the underlying Terrain
+    let tileImage = document.getElementById(tileData.getTerrain());
+    context.drawImage(tileImage, 0, 0, tileCanvas.width, tileCanvas.height);
+
+    // Display Connecting Roads
+    if (tileData.hasRoad()) {
+     if (col >= 0) {
+         // Tile is not on left edge
+         if (row >= 0 && gTileMap.selectTile(col-1, row+1).hasRoad()) {
+             context.drawImage(document.getElementById('roadSW'), 0, 0, tileCanvas.width, tileCanvas.height);
+         }
+         if ( gTileMap.selectTile(col-1, row).hasRoad()) {
+             context.drawImage(document.getElementById('roadW'), 0, 0, tileCanvas.width, tileCanvas.height);
+         }
+         if ( row < gTileMap.height-1 && gTileMap.selectTile(col-1, row-1).hasRoad()) {
+             context.drawImage(document.getElementById('roadNW'), 0, 0, tileCanvas.width, tileCanvas.height);
+         }
+     }
+     if (col < gTileMap.width-1) {
+         // Tile is not on right edge
+         if (row >= 0 && gTileMap.selectTile(col+1, row+1).hasRoad()) {
+             context.drawImage(document.getElementById('roadSE'), 0, 0, tileCanvas.width, tileCanvas.height);
+         }
+         if ( gTileMap.selectTile(col+1, row).hasRoad()) {
+             context.drawImage(document.getElementById('roadE'), 0, 0, tileCanvas.width, tileCanvas.height);
+         }
+         if ( row < gTileMap.height-1 && gTileMap.selectTile(col+1, row-1).hasRoad()) {
+             context.drawImage(document.getElementById('roadNE'), 0, 0, tileCanvas.width, tileCanvas.height);
+         }
+     }
+     if (row >= 0 && gTileMap.selectTile(col, row-1).hasRoad()) {
+         context.drawImage(document.getElementById('roadN'), 0, 0, tileCanvas.width, tileCanvas.height);
+     }
+     if (row < gTileMap.height-1 && gTileMap.selectTile(col, row+1).hasRoad()) {
+         context.drawImage(document.getElementById('roadS'), 0, 0, tileCanvas.width, tileCanvas.height);
+     }
+    }
+
+    // Display Structures
+    if (tileData.structure != null) {
+     context.drawImage(document.getElementById(tileData.structure.name), 0, 0, tileCanvas.width, tileCanvas.height);
+    }
+
+    // Display Army presence
+    if (tileData.armyId != "") {
+     if (gArmyList[tileData.armyId].owner === gPlayer.id) {
+         context.drawImage(document.getElementById('friendlyArmy'), 0, 0, tileCanvas.width, tileCanvas.height);
+     } else {
+         context.drawImage(document.getElementById('enemyArmy'), 0, 0, tileCanvas.width, tileCanvas.height);
+     }
+     
+    }
 }
 
 //----- updateResources -------------------------------------------------------
@@ -911,8 +924,8 @@ function loadClickHandlers() {
     document.getElementById('newArmyButton').addEventListener('click', (pEvent) => {
         // Get Button Attributes
         let targetButton = pEvent.currentTarget;
-        let tileX = targetButton.dataset.col;
-        let tileY = targetButton.dataset.row;
+        let tileX = Number(targetButton.dataset.col);
+        let tileY = Number(targetButton.dataset.row);
 
         let armyArray = [];
         let newArmy = document.getElementById('newArmy');
@@ -954,11 +967,7 @@ function loadClickHandlers() {
         });
 
         // Draw the new Army on the map
-        let mapTable = document.getElementById('mapTable');
-        let currentCell = mapTable.rows[tileY].cells[tileX];
-        let tileCanvas = currentCell.getElementsByTagName('canvas')[0];
-        let tileContext = tileCanvas.getContext('2d');
-        tileContext.drawImage(document.getElementById('friendlyArmy'), 0, 0, tileCanvas.width, tileCanvas.height);
+        drawTile(tileX, tileY);
 
         // Close the garrison menu
         document.getElementById('closeGarrison').click();
