@@ -354,6 +354,35 @@ ul {
     background-color: sienna;
 }
 
+#generalOrdersBox {
+    top: 15vh;
+    left: 25vw;
+    position: absolute;
+    width: 30vw;
+    height: 70vh;
+    display: none;
+    border: 1vmin solid gold;
+    background-color: black;
+}
+
+#generalOrdersList {
+    position: absolute;
+    top: 10vh;
+    left: 2vw;
+    height: 60vh;
+    width: 23vw;
+}
+
+#submitGeneralOrders {
+    position: absolute;
+    bottom: 5vh;
+    right: 2vw;
+}
+
+#engagement {
+    right: 2vw;
+}
+
 .close {
     position: absolute;
     top: 0;

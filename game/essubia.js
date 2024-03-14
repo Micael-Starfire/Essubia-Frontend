@@ -197,7 +197,6 @@ function readTile(pEvent) {
     }
 
     // Manage the Army Info Box
-    
     if (tileData.armyId !== "") {
         let tileArmy = gArmyList[tileData.armyId];
         let infoBox = document.getElementById('armyInfoBox')
@@ -212,10 +211,12 @@ function readTile(pEvent) {
             armyName.style.color = 'lightgreen';
             armyOwner.innerText = gPlayer.name;
             armyName.innerText = tileArmy.name;
+            // Enable the army management
             for (let index=1; index<5; index++) {
                 infoBox.children[index].style.display = 'inline-block';
                 infoBox.children[index].dataset.col = tileX;
                 infoBox.children[index].dataset.row = tileY;
+                infoBox.children[index].dataset.armyId = tileData.armyId;
                 inspectArmy.style.display = 'none'
             }
             if (isTileOwner) {
@@ -971,9 +972,56 @@ function loadClickHandlers() {
 
         // Close the garrison menu
         document.getElementById('closeGarrison').click();
-        
-
     });
+
+    // Assign the General Orders button handler
+    document.getElementById('generalOrdersButton').addEventListener('click', (pEvent) => {
+        // If a menu is open, do nothing
+        if (gMenuOpen) {
+            return;
+        }
+
+        // This handler opens a menu
+        gMenuOpen = true;
+
+        // Get button attributes
+        let targetButton = pEvent.currentTarget;
+        let tileX = targetButton.dataset.col;
+        let tileY = targetButton.dataset.row;
+        let tileArmyId = targetButton.dataset.armyId;
+        let tileArmy = gArmyList[tileArmyId];
+
+        // Pass the Army Id to the submit orders
+        document.getElementById('submitGeneralOrders').dataset.armyId = tileArmyId;
+
+        document.getElementById('generalOrdersBox').style.display = 'block';
+        let engagement = document.getElementById('engagement');
+        engagement.value = tileArmy.generalOrders['engagement'];
+        //document.getElementById('engagement').value = tileArmy.generalOrders['engagment'];
+    });
+
+    // Assign the Close General Orders handler
+    document.getElementById('closeGeneralOrders').addEventListener('click', (pEvent) => {
+        document.getElementById('generalOrdersBox').style.display = 'none';
+        gMenuOpen = false;
+    });
+
+    // Assign the Save Orders button handler
+    document.getElementById('submitGeneralOrders').addEventListener('click', (pEvent) => {
+        // Don't reload the page
+        pEvent.preventDefault();
+
+        // Get button attributes
+        let targetButton = pEvent.currentTarget;
+        let tileArmyId = targetButton.dataset.armyId;
+        let tileArmy = gArmyList[tileArmyId];
+
+        tileArmy.generalOrders['engagement'] = document.getElementById("engagement").value;
+
+        // Close the General Orders menu
+        gMenuOpen = false;
+        document.getElementById('generalOrdersBox').style.display = 'none';
+    })
     
 }
 

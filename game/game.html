@@ -113,6 +113,28 @@
             <div id="newArmy"></div>
         </div>
 
+        <div id="generalOrdersBox">
+            <div id="closeGeneralOrders" class="close">
+                <img src="./closeButton.png" />
+            </div>
+
+            <form id="generalOrdersList">
+                <label for="engagement">
+                    Engagement Level &nbsp &nbsp &nbsp
+                </label>
+
+                <select name="engagement" id="engagement">
+                    <option value="pursue">Pursue</option>
+                    <option value="engage">Engage</option>
+                    <option value="ignore">Ignore</option>
+                    <option value="avoid">Avoid</option>
+                    <option value="flee">Flee</option>
+                </select>
+
+                <input type="submit" value="Save Orders" id="submitGeneralOrders" class="action"> 
+            </form>
+        </div>
+
         <script type='module' src="essubia.js" ></script>
 
 

@@ -18,6 +18,10 @@ export class Army {
         this.trueSpeed = 0;
         this.maxSpeed = 1000;
         this.avgSpeed = 0;
+
+        this.generalOrders = {
+            engagement: "ignore"
+        };
     }
 
     addUnit = (pUnit) => {

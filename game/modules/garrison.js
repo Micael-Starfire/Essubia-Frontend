@@ -6,6 +6,8 @@ export class Garrison {
         this.yPos = pY;
         this.unitList = {};
         this.trainingUnit = "";
+
+        this.disbandedArmyName = "";
     }
 
     createUnit = (pUnit, pId) => {
