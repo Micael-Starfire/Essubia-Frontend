@@ -1021,7 +1021,52 @@ function loadClickHandlers() {
         // Close the General Orders menu
         gMenuOpen = false;
         document.getElementById('generalOrdersBox').style.display = 'none';
-    })
+    });
+
+    // Assign the Manage Army click handler
+    document.getElementById('manageArmyButton').addEventListener('click', (pEvent) => {
+        // If a menu is open, do nothing
+        if (gMenuOpen) {
+            return;
+        }
+
+        // This handler opens a menu
+        gMenuOpen = true;
+        
+        let targetButton = pEvent.currentTarget;
+        let tileX = targetButton.dataset.col;
+        let tileY = targetButton.dataset.row;
+        let tileArmyId = targetButton.dataset.armyId;
+        let tileArmy = gArmyList[tileArmyId];
+        
+
+        document.getElementById('manageArmyBox').style.display = 'block';
+
+        let armyList = document.getElementById('manageArmy');
+        let units = tileArmy.unitList;
+        for (const unit in units) {
+            let currentUnit = units[unit];
+
+            let unitDisplay = document.createElement('li');
+            unitDisplay.id = unit;
+            unitDisplay.classList.add('unitSelection');
+            unitDisplay.dataset.id = unit;
+            unitDisplay.dataset.col = tileX;
+            unitDisplay.dataset.row = tileX;
+            unitDisplay.innerText = currentUnit.name + '\n\nCoshesion: ' + currentUnit.cohesion;
+
+            armyList.appendChild(unitDisplay);
+        }
+    });
+
+    // Assign the Close Army Management handler
+    document.getElementById('closeManageArmy').addEventListener('click', (pEvent) => {
+        gMenuOpen = false;
+        
+        document.getElementById('manageArmyBox').style.display = "none";
+        document.getElementById('manageArmy').innerHTML = "";
+
+    });
     
 }
 
