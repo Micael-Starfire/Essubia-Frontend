@@ -872,13 +872,17 @@ function loadClickHandlers() {
     document.getElementById('createArmyButton').addEventListener('click', (pEvent) => {
         // Get Button Attributes
         let targetButton = pEvent.currentTarget;
-        let tileX = targetButton.dataset.col;
-        let tileY = targetButton.dataset.row;
+        let tileX = Number(targetButton.dataset.col);
+        let tileY = Number(targetButton.dataset.row);
 
         // Close the train unit menu, if open
         if( document.getElementById('unitListBox').style.display == "block") {
             document.getElementById('closeTrainUnit').click();
         }
+
+        // Fill the army name box
+        let tileGarrison = gTileMap.selectTile(tileX, tileY).garrison;
+        document.getElementById('newArmyName').value = tileGarrison.disbandedArmyName;
 
         // Pass data to the create army button
         let newArmyButton = document.getElementById('newArmyButton');
@@ -935,7 +939,7 @@ function loadClickHandlers() {
         }
 
         // Determine army name
-        let armyName = "New Army";
+        let armyName = document.getElementById('newArmyName').value;
 
         // Determine the placeholder Id
         let placeholder = "";
