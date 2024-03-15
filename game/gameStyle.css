@@ -405,6 +405,12 @@ ul {
     background-color: sienna;
 }
 
+#disbandArmyButton {
+    position: absolute;
+    top: 2vh;
+    right: 5vw;
+}
+
 .close {
     position: absolute;
     top: 0;

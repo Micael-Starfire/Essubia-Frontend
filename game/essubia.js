@@ -1033,11 +1033,23 @@ function loadClickHandlers() {
         // This handler opens a menu
         gMenuOpen = true;
         
+        // Get button attributes
         let targetButton = pEvent.currentTarget;
-        let tileX = targetButton.dataset.col;
-        let tileY = targetButton.dataset.row;
+        let tileX = Number(targetButton.dataset.col);
+        let tileY = Number(targetButton.dataset.row);
         let tileArmyId = targetButton.dataset.armyId;
         let tileArmy = gArmyList[tileArmyId];
+        
+        // Pass data to the disband army button if there is a garrison here
+        let disbandArmyButton = document.getElementById('disbandArmyButton');
+        if (gTileMap.selectTile(tileX, tileY).garrison != null) {
+            disbandArmyButton.disabled = false;
+            disbandArmyButton.dataset.col = tileX;
+            disbandArmyButton.dataset.row = tileY;
+            disbandArmyButton.dataset.armyId = tileArmyId;
+        } else {
+            disbandArmyButton.disabled = true;
+        }
         
 
         document.getElementById('manageArmyBox').style.display = 'block';
@@ -1062,11 +1074,50 @@ function loadClickHandlers() {
     // Assign the Close Army Management handler
     document.getElementById('closeManageArmy').addEventListener('click', (pEvent) => {
         gMenuOpen = false;
-        
         document.getElementById('manageArmyBox').style.display = "none";
         document.getElementById('manageArmy').innerHTML = "";
 
     });
-    
+
+    // Assign the Disband Army Button click handler
+    document.getElementById('disbandArmyButton').addEventListener('click', (pEvent) => {
+        // Get Button attributes
+        let targetButton = pEvent.currentTarget;
+        let tileX = Number(targetButton.dataset.col);
+        let tileY = Number(targetButton.dataset.row);
+        let tileArmyId = targetButton.dataset.armyId;
+        let tileArmy = gArmyList[tileArmyId];
+        let tileGarrison =  gTileMap.selectTile(tileX, tileY).garrison;
+
+        // Manage the Immediate Order
+        if (tileArmyId.includes('placeholder')) {
+            // Army was recently created, so just undo the creation order
+            gImmediateOrders = gImmediateOrders.filter( (order) => {
+                return order.armyId != tileArmyId;
+            });
+        } else {
+            // Create the disband order
+            gImmediateOrders.push( new ImmediateOrder(
+                'disbandArmy', tileX, tileY, tileArmyId
+            ));
+        }
+
+        // Move the units from the army to the garrison
+        for (const unitId in tileArmy.unitList) {
+            tileGarrison.unitList[unitId] = tileArmy.unitList[unitId];
+            delete tileArmy.unitList[unitId];
+        }
+
+        tileGarrison.disbandedArmyName = tileArmy.name;
+        delete gArmyList[tileArmyId];
+        gTileMap.selectTile(tileX, tileY).armyId = "";
+
+        // Redraw the tile
+        drawTile(tileX, tileY);
+
+        // Close the army menu and open the garrison menu
+        document.getElementById('closeManageArmy').click();
+        document.getElementById('manageGarrisonButton').click();
+    });
 }
 

@@ -9,11 +9,11 @@ class Order {
 }
 
 export class ImmediateOrder extends Order {
-    constructor (pType, pX, pY, pArmyId, pArmyArray, pArmyName) {
+    constructor (pType, pX, pY, pArmyId, pArmyArray=[], pArmyName="") {
         super(pType, pX, pY);
         this.armyId = pArmyId;
-        this.armyArray = [];
-        this.armyName = "";
+        this.armyArray = pArmyArray;
+        this.armyName = pArmyName;
     }
 }
 
