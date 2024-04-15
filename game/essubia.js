@@ -92,7 +92,7 @@ window.addEventListener('load', function() {
 //----- readTile --------------------------------------------------------------
 function readTile(pEvent) {
     // If a menu is open, do nothing
-    if (gMenuOpen) {
+    if (window.gMenuOpen) {
         return;
     }
 
@@ -553,7 +553,7 @@ function loadClickHandlers() {
     // Load the click event handler for claimTileButton
     document.getElementById('claimTileButton').addEventListener('click', (pEvent) => {
         // If a menu is open, do nothing
-        if (gMenuOpen) {
+        if (window.gMenuOpen) {
             return;
         }
 
@@ -579,7 +579,7 @@ function loadClickHandlers() {
     // Load the click event handler for buildRoadButton
     document.getElementById('buildRoadButton').addEventListener('click', (pEvent) => {
         // If a menu is open, do nothing
-        if (gMenuOpen) {
+        if (window.gMenuOpen) {
             return;
         }
 
@@ -607,7 +607,7 @@ function loadClickHandlers() {
     // Load the click event handler for improveQuality
     document.getElementById('improveQualityButton').addEventListener( 'click', (pEvent) => {
         // If a menu is open, do nothing
-        if (gMenuOpen) {
+        if (window.gMenuOpen) {
             return;
         }
 
@@ -635,12 +635,12 @@ function loadClickHandlers() {
     // Set up the Build Structure menu
     document.getElementById('buildStructureButton').addEventListener('click', (pEvent) => {
         // If a menu is open, do nothing
-        if (gMenuOpen) {
+        if (window.gMenuOpen) {
             return;
         }
 
         // This handler opens a menu
-        gMenuOpen = true;
+        window.gMenuOpen = true;
 
         let targetButton = pEvent.currentTarget;
         let tileX = targetButton.dataset.col;
@@ -718,7 +718,7 @@ function loadClickHandlers() {
                     gTileMap.selectTile(xPos, yPos).buildingStructure = gStructureTemplates[buildId].name;
 
                     // Close the menu
-                    gMenuOpen = false;
+                    window.gMenuOpen = false;
                     document.getElementById('structureListBox').style.display = 'none';
                     document.getElementById('structureList').innerHTML = "";
                     document.getElementById('mapTable').rows[yPos].cells[xPos].click();
@@ -736,7 +736,7 @@ function loadClickHandlers() {
 
     // Add the Close Build Structure menu click handler
     document.getElementById('closeStructure').addEventListener('click', (pEvent) => {
-        gMenuOpen = false;
+        window.gMenuOpen = false;
         document.getElementById('structureListBox').style.display = "none";
         document.getElementById('structureList').innerHTML = "";
     });
@@ -744,12 +744,12 @@ function loadClickHandlers() {
     // Set up the Garrison Management Menu
     document.getElementById('manageGarrisonButton').addEventListener('click', (pEvent) => {
         // If a menu is open, do nothing
-        if (gMenuOpen) {
+        if (window.gMenuOpen) {
             return;
         }
 
         // This handler opens a menu
-        gMenuOpen = true;
+        window.gMenuOpen = true;
         
         let targetButton = pEvent.currentTarget;
         let tileX = targetButton.dataset.col;
@@ -802,7 +802,7 @@ function loadClickHandlers() {
 
     // Add the Close Garrison Management click handler
     document.getElementById('closeGarrison').addEventListener('click', (pEvent) => {
-        gMenuOpen = false;
+        window.gMenuOpen = false;
 
         // Close Train Unit if open
         if( document.getElementById('unitListBox').style.display == "block") {
@@ -989,12 +989,12 @@ function loadClickHandlers() {
     // Assign the General Orders button handler
     document.getElementById('generalOrdersButton').addEventListener('click', (pEvent) => {
         // If a menu is open, do nothing
-        if (gMenuOpen) {
+        if (window.gMenuOpen) {
             return;
         }
 
         // This handler opens a menu
-        gMenuOpen = true;
+        window.gMenuOpen = true;
 
         // Get button attributes
         let targetButton = pEvent.currentTarget;
@@ -1015,7 +1015,7 @@ function loadClickHandlers() {
     // Assign the Close General Orders handler
     document.getElementById('closeGeneralOrders').addEventListener('click', (pEvent) => {
         document.getElementById('generalOrdersBox').style.display = 'none';
-        gMenuOpen = false;
+        window.gMenuOpen = false;
     });
 
     // Assign the Save Orders button handler
@@ -1031,19 +1031,19 @@ function loadClickHandlers() {
         tileArmy.generalOrders['engagement'] = document.getElementById("engagement").value;
 
         // Close the General Orders menu
-        gMenuOpen = false;
+        window.gMenuOpen = false;
         document.getElementById('generalOrdersBox').style.display = 'none';
     });
 
     // Assign the Manage Army click handler
     document.getElementById('manageArmyButton').addEventListener('click', (pEvent) => {
         // If a menu is open, do nothing
-        if (gMenuOpen) {
+        if (window.gMenuOpen) {
             return;
         }
 
         // This handler opens a menu
-        gMenuOpen = true;
+        window.gMenuOpen = true;
         
         // Get button attributes
         let targetButton = pEvent.currentTarget;
@@ -1085,7 +1085,7 @@ function loadClickHandlers() {
 
     // Assign the Close Army Management handler
     document.getElementById('closeManageArmy').addEventListener('click', (pEvent) => {
-        gMenuOpen = false;
+        window.gMenuOpen = false;
         document.getElementById('manageArmyBox').style.display = "none";
         document.getElementById('manageArmy').innerHTML = "";
 
@@ -1135,12 +1135,12 @@ function loadClickHandlers() {
     // Assign the Inspect Army event handler
     document.getElementById('inspectArmyButton').addEventListener('click', (pEvent) => {
         // If a menu is open, do nothing
-        if (gMenuOpen) {
+        if (window.gMenuOpen) {
             return;
         }
 
         // This handler opens a menu
-        gMenuOpen = true;
+        window.gMenuOpen = true;
 
         // Get Button attributes
         let targetButton = pEvent.currentTarget;
@@ -1170,7 +1170,7 @@ function loadClickHandlers() {
 
     // Assign the Close Inspect Army handler
     document.getElementById('closeInspectArmy').addEventListener('click', (pEvent) => {
-        gMenuOpen = false;
+        window.gMenuOpen = false;
         document.getElementById('inspectArmyBox').style.display = 'none';
         document.getElementById('inspectArmyDetails').innerText = "";
         document.getElementById('inspectArmyList').innerText = "";
