@@ -22,6 +22,8 @@ export class Army {
         this.generalOrders = {
             engagement: "ignore"
         };
+
+        this.waypoints = [ {x: this.xPos, y: this.yPos}];
     }
 
     addUnit = (pUnit) => {

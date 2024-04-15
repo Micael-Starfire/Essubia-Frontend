@@ -8,12 +8,16 @@ import { Garrison } from './modules/garrison.js';
 import { Player } from './modules/player.js';
 import { ImmediateOrder, BuildOrder } from './modules/order.js';
 
+import { MoveArmy } from './modules/movearmy.js';
+
 
 // ----- Defined Constants ----------------------------------------------------
 const MAP_WIDTH = 16;
 const MAP_HEIGHT = 16;
 
 // ----- Global Variables -----------------------------------------------------
+window.gMenuOpen = false;
+
 let gTileMap = new TileMap();
 let gStructureTemplates = {};
 let gUnitTemplates = {};
@@ -21,9 +25,7 @@ let gPlayer = new Player("mjm", "Draconis Imperium");
 let gArmyList = {};
 let gImmediateOrders = [];
 let gBuildOrders = [];
-let gMenuOpen = false;
 
-//import {loadClickHandlers} from './modules/loadclickhandlers.js';
 // ----- Main Function --------------------------------------------------------
 window.addEventListener('load', function() {
 
@@ -75,6 +77,11 @@ window.addEventListener('load', function() {
 
     // Add the button click handlers
     loadClickHandlers();
+
+    // Add event handler for Move Army menu
+    let movearmy = new MoveArmy( gTileMap, gArmyList);
+    let moveArmyButton = document.getElementById('moveArmyButton');
+    moveArmyButton.addEventListener('click', movearmy);
 
     // Add event handler for hold and drag
     let mapmover = new MapMover();
@@ -236,6 +243,7 @@ function readTile(pEvent) {
             inspectArmy.style.display = 'inline-block';
             inspectArmy.dataset.col = tileX;
             inspectArmy.dataset.row = tileY;
+            inspectArmy.dataset.armyId = tileData.armyId;
         }
     } else {
         document.getElementById('armyInfoBox').style.display = 'none';
@@ -1123,5 +1131,49 @@ function loadClickHandlers() {
         document.getElementById('closeManageArmy').click();
         document.getElementById('manageGarrisonButton').click();
     });
+
+    // Assign the Inspect Army event handler
+    document.getElementById('inspectArmyButton').addEventListener('click', (pEvent) => {
+        // If a menu is open, do nothing
+        if (gMenuOpen) {
+            return;
+        }
+
+        // This handler opens a menu
+        gMenuOpen = true;
+
+        // Get Button attributes
+        let targetButton = pEvent.currentTarget;
+        let tileX = Number(targetButton.dataset.col);
+        let tileY = Number(targetButton.dataset.row);
+        let tileArmyId = targetButton.dataset.armyId;
+        let tileArmy = gArmyList[tileArmyId];
+
+        document.getElementById('inspectArmyBox').style.display = 'block';
+
+        // Display Army Details
+        let armyDetails = document.getElementById('inspectArmyDetails');
+        let detailString = "";
+        detailString += "Owner: " + tileArmy.owner + '\n';
+        detailString += "Size Category: " + tileArmy.burdenModifier + '\n';
+
+        armyDetails.innerText = detailString;
+
+        // Display list of units
+        let armyList = document.getElementById('inspectArmyList');
+        let listString = "";
+        for (const unitId in tileArmy.unitList) {
+            listString += tileArmy.unitList[unitId].name + '\n';
+        }
+        armyList.innerText = listString;
+    });
+
+    // Assign the Close Inspect Army handler
+    document.getElementById('closeInspectArmy').addEventListener('click', (pEvent) => {
+        gMenuOpen = false;
+        document.getElementById('inspectArmyBox').style.display = 'none';
+        document.getElementById('inspectArmyDetails').innerText = "";
+        document.getElementById('inspectArmyList').innerText = "";
+    })
 }
 
