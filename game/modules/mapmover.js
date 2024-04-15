@@ -1,10 +1,17 @@
 export class MapMover {
     constructor() {
+        // Singleton Pattern
+        if (MapMover.instance != null) {
+            return MapMover.instance;
+        }
+
         this.startX = 0;
         this.startY = 0;
 
         this.previousX = 0;
         this.previousY = 0;
+
+        MapMover.instance = this;
     }
 
     handleEvent = (pEvent) => {
@@ -44,7 +51,7 @@ export class MapMover {
         if ( dx > 16 || dx < -16 || dy > 16 || dy < -16) {
             window.addEventListener('click', this.stopClick, true);
         }
-        
+
         let table = document.getElementById("mapBox");
 
         table.style.cursor = "pointer";
