@@ -60,6 +60,34 @@ ul {
     position: fixed;
 }
 
+#manageNotificationsButton {
+    position: relative;
+    width: 10vw;
+    display: inline-block;
+    text-align: center;
+    margin-left: 4vw;
+    margin-right: 4vw;
+}
+
+#manageNotificationsButton:hover {
+    cursor: pointer;
+    background-color: royalblue;
+}
+
+#manageOrdersButton {
+    position: relative;
+    width: 10vw;
+    display: inline-block;
+    text-align: center;
+    margin-left: 4vw;
+    margin-right: 4vw;
+}
+
+#manageOrdersButton:hover {
+    cursor: pointer;
+    background-color: royalblue;
+}
+
 #fieldLabor {
     min-width: 10vw;
 }
@@ -479,7 +507,52 @@ ul {
     position: absolute;
     bottom: 1vh;
     left: 8vw;
+}
 
+#manageOrdersBox {
+    position: absolute;
+    top: 7vh;
+    left: 30vw;
+    width: 45vw;
+    height: 90vh;
+    display: none;
+    border: 1vmin solid gold;
+    background-color: black;
+    z-index: 5;
+}
+
+#manageOrdersList {
+    position: absolute;
+    top: 5vh;
+    left: 2vw;
+    width: 40vw;
+    height: 80vh;
+    overflow-y: auto;
+    background-color: sienna;
+}
+
+.orderSelection {
+    height: 10vh;
+    width: 40vw;
+    border-bottom: 1vmin solid black;
+    vertical-align: middle;
+}
+
+.orderSelection:hover {
+    cursor: pointer;
+    background-color: darkgray;
+}
+
+.deleteOrder {
+    top: 1vh;
+    right: 2vw;
+    width: 7vw;
+    float: right;
+    background-color: red;
+    color: white;
+    height: 3.5vh;
+    font-size: 100%;
+    font-family: inherit;
 }
 
 .close {

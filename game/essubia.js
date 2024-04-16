@@ -8,6 +8,7 @@ import { Garrison } from './modules/garrison.js';
 import { Player } from './modules/player.js';
 import { ImmediateOrder, BuildOrder } from './modules/order.js';
 
+import { ManageOrders } from './modules/manageorders.js';
 import { MoveArmy } from './modules/movearmy.js';
 
 
@@ -74,6 +75,11 @@ window.addEventListener('load', function() {
            currentTile.addEventListener('click', readTile);
         }
     }
+
+    // Add event handler for the Manage Orders menu
+    let manageorders = new ManageOrders(gBuildOrders, gStructureTemplates, gUnitTemplates, gTileMap, gPlayer, updateResources);
+    let manageOrdersButton = document.getElementById('manageOrdersButton');
+    manageOrdersButton.addEventListener('click', manageorders);
 
     // Add the button click handlers
     loadClickHandlers();
