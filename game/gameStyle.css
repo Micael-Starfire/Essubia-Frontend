@@ -518,7 +518,7 @@ ul {
     display: none;
     border: 1vmin solid gold;
     background-color: black;
-    z-index: 5;
+    z-index: 3;
 }
 
 #manageOrdersList {
@@ -553,6 +553,35 @@ ul {
     height: 3.5vh;
     font-size: 100%;
     font-family: inherit;
+}
+
+#manageNotificationsBox {
+    position: absolute;
+    top: 7vh;
+    left: 30vw;
+    width: 45vw;
+    height: 90vh;
+    display: none;
+    border: 1vmin solid gold;
+    background-color: black;
+    z-index: 4;
+}
+
+.notificationSelection {
+    height: 10vh;
+    width: 40vw;
+    border-bottom: 1vmin solid black;
+    vertical-align: middle;
+}
+
+#manageNotificationsList {
+    position: absolute;
+    top: 5vh;
+    left: 2vw;
+    width: 40vw;
+    height: 80vh;
+    overflow-y: auto;
+    background-color: sienna;
 }
 
 .close {

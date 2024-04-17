@@ -8,6 +8,7 @@ import { Garrison } from './modules/garrison.js';
 import { Player } from './modules/player.js';
 import { ImmediateOrder, BuildOrder } from './modules/order.js';
 
+import { ManageNotifications } from './modules/managenotifications.js';
 import { ManageOrders } from './modules/manageorders.js';
 import { MoveArmy } from './modules/movearmy.js';
 
@@ -75,6 +76,11 @@ window.addEventListener('load', function() {
            currentTile.addEventListener('click', readTile);
         }
     }
+
+    // Add event handler for the Manage Notifications menu
+    let managenotifications = new ManageNotifications();
+    let manageNotificationsButton = document.getElementById('manageNotificationsButton');
+    manageNotificationsButton.addEventListener('click', managenotifications);
 
     // Add event handler for the Manage Orders menu
     let manageorders = new ManageOrders(gBuildOrders, gStructureTemplates, gUnitTemplates, gTileMap, gPlayer, updateResources);
