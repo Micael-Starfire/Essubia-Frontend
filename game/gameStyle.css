@@ -584,6 +584,19 @@ ul {
     background-color: sienna;
 }
 
+#submitOrders {
+    position: absolute;
+    left: 5vw;
+    bottom: 5vh;
+    width: 15vw;
+    height: 10vh;
+    border-radius: 15px;
+    background-color: green;
+    color: white;
+    font-size: 2em;
+    font-family: inherit;
+}
+
 .close {
     position: absolute;
     top: 0;

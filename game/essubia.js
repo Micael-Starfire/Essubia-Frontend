@@ -11,6 +11,7 @@ import { ImmediateOrder, BuildOrder } from './modules/order.js';
 import { ManageNotifications } from './modules/managenotifications.js';
 import { ManageOrders } from './modules/manageorders.js';
 import { MoveArmy } from './modules/movearmy.js';
+import { SubmitOrders } from './modules/submitorders.js';
 
 
 // ----- Defined Constants ----------------------------------------------------
@@ -94,6 +95,11 @@ window.addEventListener('load', function() {
     let movearmy = new MoveArmy( gTileMap, gArmyList);
     let moveArmyButton = document.getElementById('moveArmyButton');
     moveArmyButton.addEventListener('click', movearmy);
+
+    // Add event handler for Submit Orders
+    let submitorders = new SubmitOrders( gImmediateOrders, gBuildOrders, gArmyList, "localhost");
+    let submitOrdersButton = document.getElementById('submitOrders');
+    submitOrdersButton.addEventListener('click', submitorders);
 
     // Add event handler for hold and drag
     let mapmover = new MapMover();
@@ -996,6 +1002,9 @@ function loadClickHandlers() {
 
         // Close the garrison menu
         document.getElementById('closeGarrison').click();
+
+        // Reselect the tile
+        document.getElementById('mapTable').rows[tileY].cells[tileX].click();
     });
 
     // Assign the General Orders button handler
