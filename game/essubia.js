@@ -44,6 +44,9 @@ window.addEventListener('load', function() {
     // Initialize the Resource info
     updateResources();
 
+    // Save Resources
+    // saveArmyList();
+
     // Build the map table
     let mapTable = document.getElementById('mapTable');
 
@@ -1196,5 +1199,56 @@ function loadClickHandlers() {
         document.getElementById('inspectArmyDetails').innerText = "";
         document.getElementById('inspectArmyList').innerText = "";
     })
+}
+
+//----- saveMap ---------------------------------------------------------------
+function saveMap() {
+    const downloadButton = document.createElement('a');
+    const gamemap = JSON.stringify(gTileMap);
+    const file = new Blob([gamemap], {type: "application/json"});
+    downloadButton.href = URL.createObjectURL(file);
+    downloadButton.download = "gamemap.json";
+    downloadButton.click();
+    URL.revokeObjectURL(downloadButton.href);
+}
+
+function saveStructureTemplates() {
+    const downloadButton = document.createElement('a');
+    const structureTemplates = JSON.stringify(gStructureTemplates);
+    const file = new Blob([structureTemplates], {type: "application/json"});
+    downloadButton.href = URL.createObjectURL(file);
+    downloadButton.download = "structureTemplates.json";
+    downloadButton.click();
+    URL.revokeObjectURL(downloadButton.href);
+}
+
+function saveUnitTemplates() {
+    const downloadButton = document.createElement('a');
+    const unitTemplates = JSON.stringify(gUnitTemplates);
+    const file = new Blob([unitTemplates], {type: "application/json"});
+    downloadButton.href = URL.createObjectURL(file);
+    downloadButton.download = "unitTemplates.json";
+    downloadButton.click();
+    URL.revokeObjectURL(downloadButton.href);
+}
+
+function savePlayer() {
+    const downloadButton = document.createElement('a');
+    const player = JSON.stringify(gPlayer);
+    const file = new Blob([player], {type: "application/json"});
+    downloadButton.href = URL.createObjectURL(file);
+    downloadButton.download = "player.json";
+    downloadButton.click();
+    URL.revokeObjectURL(downloadButton.href);
+}
+
+function saveArmyList() {
+    const downloadButton = document.createElement('a');
+    const armyList = JSON.stringify(gArmyList);
+    const file = new Blob([armyList], {type: "application/json"});
+    downloadButton.href = URL.createObjectURL(file);
+    downloadButton.download = "armyList.json";
+    downloadButton.click();
+    URL.revokeObjectURL(downloadButton.href);
 }
 
