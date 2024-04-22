@@ -49,4 +49,27 @@ export class Army {
         this.unitList[pUnit.id] = pUnit;
         this.numUnits += 1;
     }
+
+    static constructFromObject( pSource){
+        let rArmy = new Army(pSource.name, pSource.id, pSource.owner, pSource.xPos, pSource.yPos);
+        
+        rArmy.disorder = pSource.disorder;
+        rArmy.burden = pSource.burden;
+        rArmy.burdenThreshold = pSource.burdenThreshold;
+        rArmy.burdenModifier = pSource.burdenModifier;
+        rArmy.numUnits = pSource.numUnits;
+        rArmy.trueSpeed = pSource.trueSpeed;
+        rArmy.maxSpeed = pSource.maxSpeed;
+        rArmy.avgSpeed = pSource.maxSpeed;
+
+        for (let order in pSource.generalOrders) {
+            rArmy.generalOrders[order] = pSource.generalOrders[order];
+        }
+
+        for (let unitId in pSource.unitList) {
+            rArmy.unitList[unitId] = Unit.constructFromObject( pSource.unitList[unitId]);
+        }
+
+        return rArmy;
+    }
 }

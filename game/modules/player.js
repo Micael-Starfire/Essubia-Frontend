@@ -24,8 +24,22 @@ export class Player {
     loseResource = (pResource, pValue) => {
         let newValue = this.resources[pResource] - pValue;
         if (newValue < 0) {
-            newvalue = 0;
+            newValue = 0;
         }
         this.resources[pResource] = newValue;
+    }
+
+    static constructFromObject( pSource ) {
+        let rPlayer = new Player(pSource.id, pSource.name);
+
+        rPlayer.labor = pSource.labor;
+        rPlayer.maxLabor = pSource.labor;
+        rPlayer.spentLabor = pSource.spentLabor;
+
+        for (let resource in pSource.resources) {
+            rPlayer.resources[resource] = pSource.resources[resource];
+        }
+
+        return rPlayer;
     }
 }

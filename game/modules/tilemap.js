@@ -1,10 +1,13 @@
-import {Tile} from './tile.js';
+import { Tile } from './tile.js';
+import { Structure } from "./structure.js";
+import { Garrison } from "./garrison.js";
+import { Unit } from "./unit.js";
 
 export class TileMap {
-    constructor() {
+    constructor(pWidth, pHeight) {
         this.tileMap = [];
-        this.width = 16;
-        this.height = 16;
+        this.width = pWidth;
+        this.height = pHeight;
 
         this.createMap();
     }
@@ -148,5 +151,45 @@ export class TileMap {
                 this.tileMap[col][row].owner = "Draconis Imperium";
             }
         }
+    }
+
+    static constructFromObject(pObject) {
+        let width = pObject.width;
+        let height = pObject.height;
+        let instance = new TileMap( width, height);
+
+        for (let col=0; col < width; col++) {
+            for (let row=0; row < height; row++) {
+                let currentTile = instance.selectTile(col, row);
+                let sourceTile = pObject.tileMap[col][row];
+
+                currentTile.setTerrain(sourceTile.terrain);
+                currentTile.owner = sourceTile.owner;
+                currentTile.claimingTile = sourceTile.claimingTile;
+                currentTile.road = sourceTile.road;
+                currentTile.buildingRoad = sourceTile.buildingRoad;
+                currentTile.urbanization = sourceTile.urbanization;
+                currentTile.population = sourceTile.population;
+                currentTile.buildingStructure = sourceTile.buildingStructure;
+                currentTile.armyId = sourceTile.armyId;
+                currentTile.improvingQuality = sourceTile.improvingQuality;
+
+                if (sourceTile.structure != null) {
+                    currentTile.structure = Structure.constructFromObject(sourceTile.structure);
+                }
+
+                if (sourceTile.garrison != null) {
+                    currentTile.garrison = new Garrison(col, row);
+                    currentTile.garrison.trainingUnit = sourceTile.garrison.trainingUnit;
+                    currentTile.garrison.disbandedArmyName = sourceTile.garrison.disbandedArmyName;
+
+                    for (let unitId in sourceTile.garrison.unitList) {
+                        currentTile.garrison.unitList[unitId] = Unit.constructFromObject(sourceTile.garrison.unitList[unitId] );
+                    }
+                }
+            }
+        }
+
+        return instance;
     }
 }

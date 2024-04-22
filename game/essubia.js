@@ -17,21 +17,31 @@ import { SubmitOrders } from './modules/submitorders.js';
 // ----- Defined Constants ----------------------------------------------------
 const MAP_WIDTH = 16;
 const MAP_HEIGHT = 16;
+const SERVER_URL = "http://localhost:3000/api/map"
 
 // ----- Global Variables -----------------------------------------------------
 window.gMenuOpen = false;
 
-let gTileMap = new TileMap();
+//let gTileMap = new TileMap(MAP_WIDTH, MAP_HEIGHT);
+let gTileMap = null;
+
+//let gPlayer = new Player("mjm", "Draconis Imperium");
+let gPlayer = null;
+
 let gStructureTemplates = {};
 let gUnitTemplates = {};
-let gPlayer = new Player("mjm", "Draconis Imperium");
 let gArmyList = {};
 let gImmediateOrders = [];
 let gBuildOrders = [];
 
 // ----- Main Function --------------------------------------------------------
-window.addEventListener('load', function() {
+window.addEventListener('load', async function() {
 
+    // Load the game data from the server
+    await loadGameData(SERVER_URL);
+
+    // Create Game State locally
+    /*
     // Set up Player
     buildPlayer();
 
@@ -40,12 +50,17 @@ window.addEventListener('load', function() {
 
     // Build Structures
     buildStructures();
+    */
 
     // Initialize the Resource info
     updateResources();
 
-    // Save Resources
-    // saveArmyList();
+    // Save Game State JSON objects
+     //saveMap();
+     //saveStructureTemplates();
+     //saveUnitTemplates();
+     //savePlayer();
+     //saveArmyList();
 
     // Build the map table
     let mapTable = document.getElementById('mapTable');
@@ -452,18 +467,58 @@ function buildTemplates() {
         "militia", "Militia", 1, 1, 1, 1,
         40, 8, 4
     );
+    gUnitTemplates["militia"].buildCost = {
+        iron: 1,
+        wood: 1,
+        leather: 2
+    };
+    gUnitTemplates["militia"].upkeepCost = {
+        leather: 1,
+        food: 1
+    };
+
     gUnitTemplates["infantry"] = new Unit(
         "infantry", "Basic Infantry", 2, 2, 1, 1,
         50, 8, 2
     );
+    gUnitTemplates["infantry"].buildCost = {
+        iron: 4,
+        wood: 1
+    };
+    gUnitTemplates["infantry"].upkeepCost = {
+        iron: 2,
+        food: 1
+    };
+
     gUnitTemplates["archer"] = new Unit(
         "archer", "Archers", 1, 1, 3, 1,
         50, 8, 2
     );
+    gUnitTemplates["archer"].buildCost = {
+        wood: 4,
+        leather: 2
+    };
+    gUnitTemplates["archer"].upkeepCost = {
+        wood: 2,
+        leather: 1,
+        food: 1
+    };
+
     gUnitTemplates["cavalry"] = new Unit (
         "cavalry", "Cavalry", 3, 1, 1, 1,
         50, 16, 2
     );
+    gUnitTemplates["cavalry"].buildCost = {
+        iron: 2,
+        leather: 2,
+        horses: 2
+    };
+    gUnitTemplates["cavalry"].upkeepCost = {
+        iron: 1,
+        leather: 1,
+        horses: 1,
+        food: 2
+    };
 
 }
 
@@ -1252,3 +1307,23 @@ function saveArmyList() {
     URL.revokeObjectURL(downloadButton.href);
 }
 
+async function loadGameData(pServerURL) {
+    let response = await fetch(pServerURL);
+    let gameData = await response.json();
+
+    gTileMap = TileMap.constructFromObject(gameData.gameMap);
+
+    for (let structureId in gameData.structureTemplates) {
+        gStructureTemplates[structureId] = Structure.constructFromObject(gameData.structureTemplates[structureId]);
+    }
+
+    for (let unitId in gameData.unitTemplates) {
+        gUnitTemplates[unitId] = Unit.constructFromObject(gameData.unitTemplates[unitId]);
+    }
+
+    gPlayer = Player.constructFromObject( gameData.player);
+
+    for (let armyId in gameData.armyList) {
+        gArmyList[armyId] = Army.constructFromObject(gameData.armyList[armyId]);
+    }
+}
