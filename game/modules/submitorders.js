@@ -18,6 +18,17 @@ export class SubmitOrders {
                                             buildOrders: this.buildOrders,
                                             armyList: this.armyList });
 
-        console.log( outputJSON );
+        
+        fetch(this.serverURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json;charset=utf-8'
+            },
+            body: outputJSON
+        }).then( (response) => response.json()
+        ). then( (result) => console.log(result)
+        ).then( location.reload(true) )
+        //.catch( (err) => console.log(err));
+        //.then( (response) = response.json()).then( (message) => console.log(message.msg));
     };
 }

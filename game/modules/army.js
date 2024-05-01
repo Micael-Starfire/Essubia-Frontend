@@ -41,7 +41,7 @@ export class Army {
         }
 
         // Recalculate the Army's average speed
-        let totalSpeed = this.avgSpeed + this.numUnits;
+        let totalSpeed = this.avgSpeed * this.numUnits;
         totalSpeed += pUnit.speed;
         this.avgSpeed = totalSpeed / (this.numUnits + 1);
 
@@ -69,6 +69,11 @@ export class Army {
         for (let unitId in pSource.unitList) {
             rArmy.unitList[unitId] = Unit.constructFromObject( pSource.unitList[unitId]);
         }
+
+        rArmy.waypoints = [];
+        pSource.waypoints.forEach( (waypoint) => {
+            rArmy.waypoints.push( { x: waypoint.x, y: waypoint.y });
+        })
 
         return rArmy;
     }

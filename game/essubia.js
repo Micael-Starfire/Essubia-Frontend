@@ -17,7 +17,8 @@ import { SubmitOrders } from './modules/submitorders.js';
 // ----- Defined Constants ----------------------------------------------------
 const MAP_WIDTH = 16;
 const MAP_HEIGHT = 16;
-const SERVER_URL = "http://localhost:3000/api/map"
+const SERVER_URL = "http://localhost:3000/api/map";
+const SUBMIT_URL = "http://localhost:3000/api/orders";
 
 // ----- Global Variables -----------------------------------------------------
 window.gMenuOpen = false;
@@ -35,7 +36,7 @@ let gImmediateOrders = [];
 let gBuildOrders = [];
 
 // ----- Main Function --------------------------------------------------------
-window.addEventListener('load', async function() {
+window.addEventListener('load', async function () {
 
     // Load the game data from the server
     await loadGameData(SERVER_URL);
@@ -56,20 +57,20 @@ window.addEventListener('load', async function() {
     updateResources();
 
     // Save Game State JSON objects
-     //saveMap();
-     //saveStructureTemplates();
-     //saveUnitTemplates();
-     //savePlayer();
-     //saveArmyList();
+    //saveMap();
+    //saveStructureTemplates();
+    //saveUnitTemplates();
+    //savePlayer();
+    //saveArmyList();
 
     // Build the map table
     let mapTable = document.getElementById('mapTable');
 
-    for( let row = 0; row < gTileMap.width; row++ ) {
+    for (let row = 0; row < gTileMap.width; row++) {
         let mapRow = document.createElement('tr');
         mapRow.setAttribute('class', 'tile');
         mapTable.appendChild(mapRow);
-        for(let col = 0; col < gTileMap.height; col++ ) {
+        for (let col = 0; col < gTileMap.height; col++) {
             let tileData = gTileMap.selectTile(col, row);
             let currentTile = document.createElement('td');
             currentTile.dataset.row = row;
@@ -77,7 +78,7 @@ window.addEventListener('load', async function() {
             currentTile.setAttribute('class', 'tile');
 
             // Sightly Darken Uncontrolled Tiles
-            if ( tileData.owner !== gPlayer.name) {
+            if (tileData.owner !== gPlayer.name) {
                 currentTile.style.opacity = 0.9;
             }
             mapRow.appendChild(currentTile);
@@ -91,8 +92,8 @@ window.addEventListener('load', async function() {
             // Draw the tile images
             drawTile(col, row);
 
-           // Add the click event
-           currentTile.addEventListener('click', readTile);
+            // Add the click event
+            currentTile.addEventListener('click', readTile);
         }
     }
 
@@ -110,12 +111,12 @@ window.addEventListener('load', async function() {
     loadClickHandlers();
 
     // Add event handler for Move Army menu
-    let movearmy = new MoveArmy( gTileMap, gArmyList);
+    let movearmy = new MoveArmy(gTileMap, gArmyList);
     let moveArmyButton = document.getElementById('moveArmyButton');
     moveArmyButton.addEventListener('click', movearmy);
 
     // Add event handler for Submit Orders
-    let submitorders = new SubmitOrders( gImmediateOrders, gBuildOrders, gArmyList, "localhost");
+    let submitorders = new SubmitOrders(gImmediateOrders, gBuildOrders, gArmyList, SUBMIT_URL);
     let submitOrdersButton = document.getElementById('submitOrders');
     submitOrdersButton.addEventListener('click', submitorders);
 
@@ -162,8 +163,8 @@ function readTile(pEvent) {
         claimButton.dataset.col = tileX;
         claimButton.dataset.row = tileY;
     } else {
-        tileOwner.style.display = 'inline-block'
-        claimButton.style.display = 'none'
+        tileOwner.style.display = 'inline-block';
+        claimButton.style.display = 'none';
         outputString = tileData.owner;
         tileOwner.innerText = outputString;
     }
@@ -183,7 +184,7 @@ function readTile(pEvent) {
     } else {
         showStructure.style.display = 'none';
         buildButton.style.display = "inline-block";
-        if ( isTileOwner) {
+        if (isTileOwner) {
             buildButton.disabled = false;
             buildButton.dataset.col = tileX;
             buildButton.dataset.row = tileY;
@@ -191,7 +192,7 @@ function readTile(pEvent) {
             buildButton.disabled = true;
         }
     }
-    
+
     // Check for road
     let showRoad = document.getElementById('showRoad');
     let buildRoad = document.getElementById('buildRoadButton');
@@ -206,7 +207,7 @@ function readTile(pEvent) {
     } else {
         showRoad.style.display = 'none';
         buildRoad.style.display = "inline-block";
-        if ( isTileOwner) {
+        if (isTileOwner) {
             buildRoad.disabled = false;
             buildRoad.dataset.col = tileX;
             buildRoad.dataset.row = tileY;
@@ -226,7 +227,7 @@ function readTile(pEvent) {
         } else {
             improveQuality.disabled = true;
         }
-        
+
         if (tileData.garrison !== null) {
             manageGarrison.disabled = false;
             manageGarrison.dataset.col = tileX;
@@ -242,7 +243,7 @@ function readTile(pEvent) {
     // Manage the Army Info Box
     if (tileData.armyId !== "") {
         let tileArmy = gArmyList[tileData.armyId];
-        let infoBox = document.getElementById('armyInfoBox')
+        let infoBox = document.getElementById('armyInfoBox');
         infoBox.style.display = 'block';
         let isPlayerArmy = (tileArmy.owner === gPlayer.id);
         let armyOwner = document.getElementById('armyOwner');
@@ -255,12 +256,12 @@ function readTile(pEvent) {
             armyOwner.innerText = gPlayer.name;
             armyName.innerText = tileArmy.name;
             // Enable the army management
-            for (let index=1; index<5; index++) {
+            for (let index = 1; index < 5; index++) {
                 infoBox.children[index].style.display = 'inline-block';
                 infoBox.children[index].dataset.col = tileX;
                 infoBox.children[index].dataset.row = tileY;
                 infoBox.children[index].dataset.armyId = tileData.armyId;
-                inspectArmy.style.display = 'none'
+                inspectArmy.style.display = 'none';
             }
             if (isTileOwner) {
                 document.getElementById('contestTerritoryButton').disabled = true;
@@ -272,8 +273,8 @@ function readTile(pEvent) {
             armyOwner.style.color = 'red';
             armyName.style.color = 'red';
             armyOwner.innerText = 'the enemy';
-            armyName.innerText = 'Enemy Army';      
-            for (let index=1; index<5; index++) {
+            armyName.innerText = 'Enemy Army';
+            for (let index = 1; index < 5; index++) {
                 infoBox.children[index].style.display = 'none';
             }
             inspectArmy.style.display = 'inline-block';
@@ -292,64 +293,64 @@ function readTile(pEvent) {
 }
 
 //----- drawTile --------------------------------------------------------------
-function drawTile (col, row) {
+function drawTile(col, row) {
     let tileData = gTileMap.selectTile(col, row);
     let mapTable = document.getElementById('mapTable');
     let currentCell = mapTable.rows[row].cells[col];
     let tileCanvas = currentCell.getElementsByTagName('canvas')[0];
     let context = tileCanvas.getContext('2d');
-   
+
     // Draw the underlying Terrain
     let tileImage = document.getElementById(tileData.getTerrain());
     context.drawImage(tileImage, 0, 0, tileCanvas.width, tileCanvas.height);
 
     // Display Connecting Roads
     if (tileData.hasRoad()) {
-     if (col >= 0) {
-         // Tile is not on left edge
-         if (row >= 0 && gTileMap.selectTile(col-1, row+1).hasRoad()) {
-             context.drawImage(document.getElementById('roadSW'), 0, 0, tileCanvas.width, tileCanvas.height);
-         }
-         if ( gTileMap.selectTile(col-1, row).hasRoad()) {
-             context.drawImage(document.getElementById('roadW'), 0, 0, tileCanvas.width, tileCanvas.height);
-         }
-         if ( row < gTileMap.height-1 && gTileMap.selectTile(col-1, row-1).hasRoad()) {
-             context.drawImage(document.getElementById('roadNW'), 0, 0, tileCanvas.width, tileCanvas.height);
-         }
-     }
-     if (col < gTileMap.width-1) {
-         // Tile is not on right edge
-         if (row >= 0 && gTileMap.selectTile(col+1, row+1).hasRoad()) {
-             context.drawImage(document.getElementById('roadSE'), 0, 0, tileCanvas.width, tileCanvas.height);
-         }
-         if ( gTileMap.selectTile(col+1, row).hasRoad()) {
-             context.drawImage(document.getElementById('roadE'), 0, 0, tileCanvas.width, tileCanvas.height);
-         }
-         if ( row < gTileMap.height-1 && gTileMap.selectTile(col+1, row-1).hasRoad()) {
-             context.drawImage(document.getElementById('roadNE'), 0, 0, tileCanvas.width, tileCanvas.height);
-         }
-     }
-     if (row >= 0 && gTileMap.selectTile(col, row-1).hasRoad()) {
-         context.drawImage(document.getElementById('roadN'), 0, 0, tileCanvas.width, tileCanvas.height);
-     }
-     if (row < gTileMap.height-1 && gTileMap.selectTile(col, row+1).hasRoad()) {
-         context.drawImage(document.getElementById('roadS'), 0, 0, tileCanvas.width, tileCanvas.height);
-     }
+        if (col >= 0) {
+            // Tile is not on left edge
+            if (row >= 0 && gTileMap.selectTile(col - 1, row + 1).hasRoad()) {
+                context.drawImage(document.getElementById('roadSW'), 0, 0, tileCanvas.width, tileCanvas.height);
+            }
+            if (gTileMap.selectTile(col - 1, row).hasRoad()) {
+                context.drawImage(document.getElementById('roadW'), 0, 0, tileCanvas.width, tileCanvas.height);
+            }
+            if (row < gTileMap.height - 1 && gTileMap.selectTile(col - 1, row - 1).hasRoad()) {
+                context.drawImage(document.getElementById('roadNW'), 0, 0, tileCanvas.width, tileCanvas.height);
+            }
+        }
+        if (col < gTileMap.width - 1) {
+            // Tile is not on right edge
+            if (row >= 0 && gTileMap.selectTile(col + 1, row + 1).hasRoad()) {
+                context.drawImage(document.getElementById('roadSE'), 0, 0, tileCanvas.width, tileCanvas.height);
+            }
+            if (gTileMap.selectTile(col + 1, row).hasRoad()) {
+                context.drawImage(document.getElementById('roadE'), 0, 0, tileCanvas.width, tileCanvas.height);
+            }
+            if (row < gTileMap.height - 1 && gTileMap.selectTile(col + 1, row - 1).hasRoad()) {
+                context.drawImage(document.getElementById('roadNE'), 0, 0, tileCanvas.width, tileCanvas.height);
+            }
+        }
+        if (row >= 0 && gTileMap.selectTile(col, row - 1).hasRoad()) {
+            context.drawImage(document.getElementById('roadN'), 0, 0, tileCanvas.width, tileCanvas.height);
+        }
+        if (row < gTileMap.height - 1 && gTileMap.selectTile(col, row + 1).hasRoad()) {
+            context.drawImage(document.getElementById('roadS'), 0, 0, tileCanvas.width, tileCanvas.height);
+        }
     }
 
     // Display Structures
     if (tileData.structure != null) {
-     context.drawImage(document.getElementById(tileData.structure.name), 0, 0, tileCanvas.width, tileCanvas.height);
+        context.drawImage(document.getElementById(tileData.structure.name), 0, 0, tileCanvas.width, tileCanvas.height);
     }
 
     // Display Army presence
     if (tileData.armyId != "") {
-     if (gArmyList[tileData.armyId].owner === gPlayer.id) {
-         context.drawImage(document.getElementById('friendlyArmy'), 0, 0, tileCanvas.width, tileCanvas.height);
-     } else {
-         context.drawImage(document.getElementById('enemyArmy'), 0, 0, tileCanvas.width, tileCanvas.height);
-     }
-     
+        if (gArmyList[tileData.armyId].owner === gPlayer.id) {
+            context.drawImage(document.getElementById('friendlyArmy'), 0, 0, tileCanvas.width, tileCanvas.height);
+        } else {
+            context.drawImage(document.getElementById('enemyArmy'), 0, 0, tileCanvas.width, tileCanvas.height);
+        }
+
     }
 }
 
@@ -361,7 +362,7 @@ function updateResources() {
 
     const textBox = document.getElementById("resourceList");
     let outputString = "\n";
-    for (const resource in gPlayer.resources ) {
+    for (const resource in gPlayer.resources) {
         outputString += "\t " + resource + ": " + gPlayer.resources[resource] + "\n";
     }
     textBox.innerText = outputString;
@@ -379,7 +380,7 @@ function buildTemplates() {
     gStructureTemplates["capital"].addTerrain("mountain");
     gStructureTemplates["capital"].description = 'Should not be shown in list';
 
-    gStructureTemplates["farm"] =  new Structure("farm", "farm");
+    gStructureTemplates["farm"] = new Structure("farm", "farm");
     gStructureTemplates["farm"].addTerrain("field");
     gStructureTemplates["farm"].addTerrain("hill");
     gStructureTemplates["farm"].laborCost = 5;
@@ -504,7 +505,7 @@ function buildTemplates() {
         food: 1
     };
 
-    gUnitTemplates["cavalry"] = new Unit (
+    gUnitTemplates["cavalry"] = new Unit(
         "cavalry", "Cavalry", 3, 1, 1, 1,
         50, 16, 2
     );
@@ -525,90 +526,90 @@ function buildTemplates() {
 //----- buildStructures -------------------------------------------------------
 function buildStructures() {
     // Build the Capital Structure
-    gTileMap.selectTile(4,4).buildStructure(gStructureTemplates["capital"]);
+    gTileMap.selectTile(4, 4).buildStructure(gStructureTemplates["capital"]);
 
     // Connect garrison to Capital and populate it
-    gTileMap.selectTile(4,4).garrison = new Garrison(4,4);
-    gTileMap.selectTile(4,4).garrison.createUnit(gUnitTemplates["archer"], "c01");
-    gTileMap.selectTile(4,4).garrison.createUnit(gUnitTemplates["archer"], "c02");
-    gTileMap.selectTile(4,4).garrison.createUnit(gUnitTemplates["archer"], "c03");
+    gTileMap.selectTile(4, 4).garrison = new Garrison(4, 4);
+    gTileMap.selectTile(4, 4).garrison.createUnit(gUnitTemplates["archer"], "c01");
+    gTileMap.selectTile(4, 4).garrison.createUnit(gUnitTemplates["archer"], "c02");
+    gTileMap.selectTile(4, 4).garrison.createUnit(gUnitTemplates["archer"], "c03");
 
 
     // build farms
-    gTileMap.selectTile(3,3).buildStructure(gStructureTemplates["farm"]);
-    gTileMap.selectTile(3,3).buildRoad();
+    gTileMap.selectTile(3, 3).buildStructure(gStructureTemplates["farm"]);
+    gTileMap.selectTile(3, 3).buildRoad();
 
-    gTileMap.selectTile(3,4).buildStructure(gStructureTemplates["farm"]);
-    gTileMap.selectTile(3,4).buildRoad();
+    gTileMap.selectTile(3, 4).buildStructure(gStructureTemplates["farm"]);
+    gTileMap.selectTile(3, 4).buildRoad();
 
     // build mine
-    gTileMap.selectTile(4,7).buildStructure(gStructureTemplates["mine"]);
-    gTileMap.selectTile(4,7).buildRoad();
+    gTileMap.selectTile(4, 7).buildStructure(gStructureTemplates["mine"]);
+    gTileMap.selectTile(4, 7).buildRoad();
 
     // build fort
-    gTileMap.selectTile(6,5).buildStructure(gStructureTemplates["fort"]);
-    gTileMap.selectTile(6,5).buildRoad();
+    gTileMap.selectTile(6, 5).buildStructure(gStructureTemplates["fort"]);
+    gTileMap.selectTile(6, 5).buildRoad();
 
     // Connect garrison to fort
-    gTileMap.selectTile(6,5).garrison = new Garrison(6,5);
+    gTileMap.selectTile(6, 5).garrison = new Garrison(6, 5);
 
     // Populate garrison
-    gTileMap.selectTile(6,5).garrison.createUnit(gUnitTemplates["militia"], "g01");
-    gTileMap.selectTile(6,5).garrison.createUnit(gUnitTemplates["militia"], "g02");
-    gTileMap.selectTile(6,5).garrison.createUnit(gUnitTemplates["archer"], "g03");
-    gTileMap.selectTile(6,5).garrison.createUnit(gUnitTemplates["cavalry"], "g04");
+    gTileMap.selectTile(6, 5).garrison.createUnit(gUnitTemplates["militia"], "g01");
+    gTileMap.selectTile(6, 5).garrison.createUnit(gUnitTemplates["militia"], "g02");
+    gTileMap.selectTile(6, 5).garrison.createUnit(gUnitTemplates["archer"], "g03");
+    gTileMap.selectTile(6, 5).garrison.createUnit(gUnitTemplates["cavalry"], "g04");
 
     // build depot
-    gTileMap.selectTile(6,7).buildStructure(gStructureTemplates["depot"]);
-    gTileMap.selectTile(6,7).buildRoad();
+    gTileMap.selectTile(6, 7).buildStructure(gStructureTemplates["depot"]);
+    gTileMap.selectTile(6, 7).buildRoad();
 
     // build ranch
-    gTileMap.selectTile(8,7).buildStructure(gStructureTemplates["ranch"]);
-    gTileMap.selectTile(8,7).buildRoad();
+    gTileMap.selectTile(8, 7).buildStructure(gStructureTemplates["ranch"]);
+    gTileMap.selectTile(8, 7).buildRoad();
 
     // build lodge
-    gTileMap.selectTile(9,2).buildStructure(gStructureTemplates["lodge"]);
-    gTileMap.selectTile(9,2).buildRoad();
+    gTileMap.selectTile(9, 2).buildStructure(gStructureTemplates["lodge"]);
+    gTileMap.selectTile(9, 2).buildRoad();
 
     // build lumbermill
-    gTileMap.selectTile(9,4).buildStructure(gStructureTemplates["lumbermill"]);
-    gTileMap.selectTile(9,4).buildRoad();
+    gTileMap.selectTile(9, 4).buildStructure(gStructureTemplates["lumbermill"]);
+    gTileMap.selectTile(9, 4).buildRoad();
 
     // build roads
-    gTileMap.selectTile(4,5).buildRoad();
-    gTileMap.selectTile(4,6).buildRoad();
-    gTileMap.selectTile(5,5).buildRoad();
-    gTileMap.selectTile(6,5).buildRoad();
-    gTileMap.selectTile(6,6).buildRoad();
-    gTileMap.selectTile(7,5).buildRoad();
-    gTileMap.selectTile(8,3).buildRoad();
-    gTileMap.selectTile(8,4).buildRoad();
-    gTileMap.selectTile(8,6).buildRoad();
+    gTileMap.selectTile(4, 5).buildRoad();
+    gTileMap.selectTile(4, 6).buildRoad();
+    gTileMap.selectTile(5, 5).buildRoad();
+    gTileMap.selectTile(6, 5).buildRoad();
+    gTileMap.selectTile(6, 6).buildRoad();
+    gTileMap.selectTile(7, 5).buildRoad();
+    gTileMap.selectTile(8, 3).buildRoad();
+    gTileMap.selectTile(8, 4).buildRoad();
+    gTileMap.selectTile(8, 6).buildRoad();
 
     // Create field army
-    gTileMap.selectTile(8,6).armyId = "field01";
+    gTileMap.selectTile(8, 6).armyId = "field01";
     gArmyList["field01"] = new Army("Cavalry Force", "field01", "mjm", 8, 6);
-    gArmyList["field01"].addUnit( gUnitTemplates["cavalry"].create("a01"));
-    gArmyList["field01"].addUnit( gUnitTemplates["cavalry"].create("a02"));
-    gArmyList["field01"].addUnit( gUnitTemplates["cavalry"].create("a03"));
-    gArmyList["field01"].addUnit( gUnitTemplates["cavalry"].create("a04"));
+    gArmyList["field01"].addUnit(gUnitTemplates["cavalry"].create("a01"));
+    gArmyList["field01"].addUnit(gUnitTemplates["cavalry"].create("a02"));
+    gArmyList["field01"].addUnit(gUnitTemplates["cavalry"].create("a03"));
+    gArmyList["field01"].addUnit(gUnitTemplates["cavalry"].create("a04"));
 
     // Create second field army
-    gTileMap.selectTile(9,9).armyId = "field02";
+    gTileMap.selectTile(9, 9).armyId = "field02";
     gArmyList["field02"] = new Army("Expeditionary Force", "field02", "mjm", 9, 9);
-    gArmyList["field02"].addUnit( gUnitTemplates["infantry"].create("b01"));
-    gArmyList["field02"].addUnit( gUnitTemplates["infantry"].create("b02"));
-    gArmyList["field02"].addUnit( gUnitTemplates["archer"].create("b03"));
-    gArmyList["field02"].addUnit( gUnitTemplates["archer"].create("b04"));
-    gArmyList["field02"].addUnit( gUnitTemplates["cavalry"].create("b05"));
+    gArmyList["field02"].addUnit(gUnitTemplates["infantry"].create("b01"));
+    gArmyList["field02"].addUnit(gUnitTemplates["infantry"].create("b02"));
+    gArmyList["field02"].addUnit(gUnitTemplates["archer"].create("b03"));
+    gArmyList["field02"].addUnit(gUnitTemplates["archer"].create("b04"));
+    gArmyList["field02"].addUnit(gUnitTemplates["cavalry"].create("b05"));
 
     // Create hostile army
-    gTileMap.selectTile(10,7).armyId = "hostile01";
+    gTileMap.selectTile(10, 7).armyId = "hostile01";
     gArmyList["hostile01"] = new Army("Cavalry Force", "hostile01", "other", 10, 7);
-    gArmyList["hostile01"].addUnit( gUnitTemplates["infantry"].create("h01"));
-    gArmyList["hostile01"].addUnit( gUnitTemplates["infantry"].create("h02"));
-    gArmyList["hostile01"].addUnit( gUnitTemplates["archer"].create("h03"));
-    gArmyList["hostile01"].addUnit( gUnitTemplates["archer"].create("h04"));
+    gArmyList["hostile01"].addUnit(gUnitTemplates["infantry"].create("h01"));
+    gArmyList["hostile01"].addUnit(gUnitTemplates["infantry"].create("h02"));
+    gArmyList["hostile01"].addUnit(gUnitTemplates["archer"].create("h03"));
+    gArmyList["hostile01"].addUnit(gUnitTemplates["archer"].create("h04"));
 
 }
 
@@ -640,16 +641,16 @@ function loadClickHandlers() {
         if (gPlayer.labor < 3 ||
             gPlayer.resources.food < 3 ||
             gPlayer.resources.wood < 3) {
-                console.log('Insufficient Resources');
-            } else {
-                gBuildOrders.push( new BuildOrder( "claimTile", tileX, tileY, ""));
-                gTileMap.selectTile(tileX, tileY).claimingTile = true;
-                gPlayer.labor -= 3;
-                gPlayer.loseResource('food', 3);
-                gPlayer.loseResource('wood', 2);
-                updateResources();
-                document.getElementById('mapTable').rows[tileY].cells[tileX].click();
-            }
+            console.log('Insufficient Resources');
+        } else {
+            gBuildOrders.push(new BuildOrder("claimTile", tileX, tileY, ""));
+            gTileMap.selectTile(tileX, tileY).claimingTile = true;
+            gPlayer.labor -= 3;
+            gPlayer.loseResource('food', 3);
+            gPlayer.loseResource('wood', 2);
+            updateResources();
+            document.getElementById('mapTable').rows[tileY].cells[tileX].click();
+        }
     });
 
     // Load the click event handler for buildRoadButton
@@ -667,21 +668,21 @@ function loadClickHandlers() {
             gPlayer.resources.stone < 5 ||
             gPlayer.resources.wood < 3 ||
             gPlayer.resources.food < 5) {
-                console.log('Insufficient Resources');
-            } else {
-                gBuildOrders.push( new BuildOrder('buildRoad', tileX, tileY));
-                gTileMap.selectTile(tileX, tileY).buildingRoad = true;
-                gPlayer.labor -= 5;
-                gPlayer.loseResource('stone', 5);
-                gPlayer.loseResource('wood', 3);
-                gPlayer.loseResource('food', 5);
-                updateResources();
-                document.getElementById('mapTable').rows[tileY].cells[tileX].click();
-            }
+            console.log('Insufficient Resources');
+        } else {
+            gBuildOrders.push(new BuildOrder('buildRoad', tileX, tileY));
+            gTileMap.selectTile(tileX, tileY).buildingRoad = true;
+            gPlayer.labor -= 5;
+            gPlayer.loseResource('stone', 5);
+            gPlayer.loseResource('wood', 3);
+            gPlayer.loseResource('food', 5);
+            updateResources();
+            document.getElementById('mapTable').rows[tileY].cells[tileX].click();
+        }
     });
 
     // Load the click event handler for improveQuality
-    document.getElementById('improveQualityButton').addEventListener( 'click', (pEvent) => {
+    document.getElementById('improveQualityButton').addEventListener('click', (pEvent) => {
         // If a menu is open, do nothing
         if (window.gMenuOpen) {
             return;
@@ -692,22 +693,22 @@ function loadClickHandlers() {
         let tileY = targetButton.dataset.row;
 
         // Check that the player can afford
-        if ( gPlayer.labor < 1 ||
-             gPlayer.resources.food < 1 ||
-             gPlayer.resources.wood < 1) {
-                console.log('Insufficent Resources');
-             } else {
-                gBuildOrders.push( new BuildOrder('improveQuality', tileX, tileY, "" ));
-                gTileMap.selectTile(tileX, tileY).improvingQuality = true;
-                gPlayer.labor -= 1;
-                gPlayer.loseResource('food', 1);
-                gPlayer.loseResource('wood', 1);
-                updateResources();
-                document.getElementById('mapTable').rows[tileY].cells[tileX].click();
-             }
+        if (gPlayer.labor < 1 ||
+            gPlayer.resources.food < 1 ||
+            gPlayer.resources.wood < 1) {
+            console.log('Insufficent Resources');
+        } else {
+            gBuildOrders.push(new BuildOrder('improveQuality', tileX, tileY, ""));
+            gTileMap.selectTile(tileX, tileY).improvingQuality = true;
+            gPlayer.labor -= 1;
+            gPlayer.loseResource('food', 1);
+            gPlayer.loseResource('wood', 1);
+            updateResources();
+            document.getElementById('mapTable').rows[tileY].cells[tileX].click();
+        }
     });
 
-    
+
     // Set up the Build Structure menu
     document.getElementById('buildStructureButton').addEventListener('click', (pEvent) => {
         // If a menu is open, do nothing
@@ -734,7 +735,7 @@ function loadClickHandlers() {
             }
 
             // Skip if the tile terrain is not available for buiding the structure
-            if ( !currentStructure.terrains.includes(gTileMap.selectTile(tileX, tileY).terrain) ) {
+            if (!currentStructure.terrains.includes(gTileMap.selectTile(tileX, tileY).terrain)) {
                 continue;
             }
 
@@ -781,7 +782,7 @@ function loadClickHandlers() {
                     let xPos = targetSelection.dataset.col;
                     let yPos = targetSelection.dataset.row;
 
-                    gBuildOrders.push( new BuildOrder('buildStructure', xPos, yPos, buildId));
+                    gBuildOrders.push(new BuildOrder('buildStructure', xPos, yPos, buildId));
 
                     // Subtract Costs
                     gPlayer.labor -= gStructureTemplates[buildId].laborCost;
@@ -807,7 +808,7 @@ function loadClickHandlers() {
             selectionList.appendChild(selection);
         }
 
-        
+
     });
 
     // Add the Close Build Structure menu click handler
@@ -826,7 +827,7 @@ function loadClickHandlers() {
 
         // This handler opens a menu
         window.gMenuOpen = true;
-        
+
         let targetButton = pEvent.currentTarget;
         let tileX = targetButton.dataset.col;
         let tileY = targetButton.dataset.row;
@@ -835,8 +836,8 @@ function loadClickHandlers() {
         document.getElementById('garrisonListBox').style.display = 'block';
 
         // Assign the Garrison management command buttons
-        
-        let trainUnit = document.getElementById('trainUnitButton')
+
+        let trainUnit = document.getElementById('trainUnitButton');
         if (tileData.garrison.trainingUnit == "") {
             trainUnit.disabled = false;
             trainUnit.dataset.col = tileX;
@@ -845,7 +846,7 @@ function loadClickHandlers() {
         } else {
             trainUnit.disabled = true;
             document.getElementById('currentlyTraining').innerText = " " +
-                    gUnitTemplates[tileData.garrison.trainingUnit].name;
+                gUnitTemplates[tileData.garrison.trainingUnit].name;
         }
 
         let createArmy = document.getElementById('createArmyButton');
@@ -856,7 +857,7 @@ function loadClickHandlers() {
         } else {
             createArmy.disabled = true;
         }
-        
+
 
         let garrisonList = document.getElementById('garrisonList');
         let units = tileData.garrison.unitList;
@@ -881,7 +882,7 @@ function loadClickHandlers() {
         window.gMenuOpen = false;
 
         // Close Train Unit if open
-        if( document.getElementById('unitListBox').style.display == "block") {
+        if (document.getElementById('unitListBox').style.display == "block") {
             document.getElementById('unitListBox').style.display = "none";
             document.getElementById('unitList').innerHTML = "";
             //document.getElementById('closeTrainUnit').click();
@@ -892,14 +893,14 @@ function loadClickHandlers() {
             document.getElementById('newArmy').innerHTML = "";
             //document.getElementById('closeNewArmy').click();
         }
-        
+
         document.getElementById('garrisonListBox').style.display = "none";
         document.getElementById('garrisonList').innerHTML = "";
 
     });
 
     // Add the Train Unit click event listener
-    document.getElementById('trainUnitButton').addEventListener( 'click', (pEvent) => {
+    document.getElementById('trainUnitButton').addEventListener('click', (pEvent) => {
         // Close the create army menu f open
         if (document.getElementById('newArmyBox').style.display == 'block') {
             document.getElementById('closeNewArmy').click();
@@ -947,7 +948,7 @@ function loadClickHandlers() {
     });
 
     // Add the close Train Unit click handler
-    document.getElementById('closeTrainUnit').addEventListener('click', (pEvent) =>{
+    document.getElementById('closeTrainUnit').addEventListener('click', (pEvent) => {
         document.getElementById('unitListBox').style.display = "none";
         document.getElementById('unitList').innerHTML = "";
     });
@@ -960,7 +961,7 @@ function loadClickHandlers() {
         let tileY = Number(targetButton.dataset.row);
 
         // Close the train unit menu, if open
-        if( document.getElementById('unitListBox').style.display == "block") {
+        if (document.getElementById('unitListBox').style.display == "block") {
             document.getElementById('closeTrainUnit').click();
         }
 
@@ -1008,7 +1009,7 @@ function loadClickHandlers() {
         document.getElementById('manageGarrisonButton').click();
     });
 
-    
+
     // Add the click handler for final Army Creation button
     document.getElementById('newArmyButton').addEventListener('click', (pEvent) => {
         // Get Button Attributes
@@ -1039,18 +1040,18 @@ function loadClickHandlers() {
         }
 
         // Create the order
-        gImmediateOrders.push( new ImmediateOrder(
+        gImmediateOrders.push(new ImmediateOrder(
             'createArmy', tileX, tileY, placeholder, armyArray, armyName
         ));
 
         // Create the local Army
         gTileMap.selectTile(tileX, tileY).armyId = placeholder;
         gArmyList[placeholder] = new Army(
-            armyName, placeholder, 'mjm', tileX, tileY );
+            armyName, placeholder, 'mjm', tileX, tileY);
         let localGarrison = gTileMap.selectTile(tileX, tileY).garrison.unitList;
 
         // Move units from the garrison to the army
-        armyArray.forEach( (unitId) => {
+        armyArray.forEach((unitId) => {
             gArmyList[placeholder].addUnit(localGarrison[unitId]);
             delete localGarrison[unitId];
         });
@@ -1123,14 +1124,14 @@ function loadClickHandlers() {
 
         // This handler opens a menu
         window.gMenuOpen = true;
-        
+
         // Get button attributes
         let targetButton = pEvent.currentTarget;
         let tileX = Number(targetButton.dataset.col);
         let tileY = Number(targetButton.dataset.row);
         let tileArmyId = targetButton.dataset.armyId;
         let tileArmy = gArmyList[tileArmyId];
-        
+
         // Pass data to the disband army button if there is a garrison here
         let disbandArmyButton = document.getElementById('disbandArmyButton');
         if (gTileMap.selectTile(tileX, tileY).garrison != null) {
@@ -1141,7 +1142,7 @@ function loadClickHandlers() {
         } else {
             disbandArmyButton.disabled = true;
         }
-        
+
 
         document.getElementById('manageArmyBox').style.display = 'block';
 
@@ -1178,20 +1179,39 @@ function loadClickHandlers() {
         let tileY = Number(targetButton.dataset.row);
         let tileArmyId = targetButton.dataset.armyId;
         let tileArmy = gArmyList[tileArmyId];
-        let tileGarrison =  gTileMap.selectTile(tileX, tileY).garrison;
+        let tileGarrison = gTileMap.selectTile(tileX, tileY).garrison;
 
         // Manage the Immediate Order
         if (tileArmyId.includes('placeholder')) {
+            console.log("Disbanding recently created army");
             // Army was recently created, so just undo the creation order
-            gImmediateOrders = gImmediateOrders.filter( (order) => {
+            /*gImmediateOrders = gImmediateOrders.filter( (order) => {
                 return order.armyId != tileArmyId;
-            });
+            }); */
+            let tempArray = [];
+            let ordersLength = gImmediateOrders.length;
+            for (let count = 0; count < ordersLength; count++) {
+                let tempOrder = gImmediateOrders.pop();
+                if (tempOrder.armyId != tileArmyId) {
+                    tempArray.push(tempOrder);
+                } else {
+                    // Removed the correct order, so just exit the loop
+                    break;
+                }
+            }
+            // PUt the temorarily removed orders back
+            let tempLength = tempArray.length;
+            for (let count = 0; count < tempLength; count++) {
+                gImmediateOrders.push(tempArray.pop());
+            }
+            console.log(gImmediateOrders);
         } else {
             // Create the disband order
-            gImmediateOrders.push( new ImmediateOrder(
+            gImmediateOrders.push(new ImmediateOrder(
                 'disbandArmy', tileX, tileY, tileArmyId
             ));
         }
+
 
         // Move the units from the army to the garrison
         for (const unitId in tileArmy.unitList) {
@@ -1253,14 +1273,14 @@ function loadClickHandlers() {
         document.getElementById('inspectArmyBox').style.display = 'none';
         document.getElementById('inspectArmyDetails').innerText = "";
         document.getElementById('inspectArmyList').innerText = "";
-    })
+    });
 }
 
 //----- saveMap ---------------------------------------------------------------
 function saveMap() {
     const downloadButton = document.createElement('a');
     const gamemap = JSON.stringify(gTileMap);
-    const file = new Blob([gamemap], {type: "application/json"});
+    const file = new Blob([gamemap], { type: "application/json" });
     downloadButton.href = URL.createObjectURL(file);
     downloadButton.download = "gamemap.json";
     downloadButton.click();
@@ -1270,7 +1290,7 @@ function saveMap() {
 function saveStructureTemplates() {
     const downloadButton = document.createElement('a');
     const structureTemplates = JSON.stringify(gStructureTemplates);
-    const file = new Blob([structureTemplates], {type: "application/json"});
+    const file = new Blob([structureTemplates], { type: "application/json" });
     downloadButton.href = URL.createObjectURL(file);
     downloadButton.download = "structureTemplates.json";
     downloadButton.click();
@@ -1280,7 +1300,7 @@ function saveStructureTemplates() {
 function saveUnitTemplates() {
     const downloadButton = document.createElement('a');
     const unitTemplates = JSON.stringify(gUnitTemplates);
-    const file = new Blob([unitTemplates], {type: "application/json"});
+    const file = new Blob([unitTemplates], { type: "application/json" });
     downloadButton.href = URL.createObjectURL(file);
     downloadButton.download = "unitTemplates.json";
     downloadButton.click();
@@ -1289,10 +1309,10 @@ function saveUnitTemplates() {
 
 function savePlayer() {
     const downloadButton = document.createElement('a');
-    const player = JSON.stringify(gPlayer);
-    const file = new Blob([player], {type: "application/json"});
+    const gPlayer = JSON.stringify(gPlayer);
+    const file = new Blob([gPlayer], { type: "application/json" });
     downloadButton.href = URL.createObjectURL(file);
-    downloadButton.download = "player.json";
+    downloadButton.download = "gPlayer.json";
     downloadButton.click();
     URL.revokeObjectURL(downloadButton.href);
 }
@@ -1300,7 +1320,7 @@ function savePlayer() {
 function saveArmyList() {
     const downloadButton = document.createElement('a');
     const armyList = JSON.stringify(gArmyList);
-    const file = new Blob([armyList], {type: "application/json"});
+    const file = new Blob([armyList], { type: "application/json" });
     downloadButton.href = URL.createObjectURL(file);
     downloadButton.download = "armyList.json";
     downloadButton.click();
@@ -1308,22 +1328,80 @@ function saveArmyList() {
 }
 
 async function loadGameData(pServerURL) {
-    let response = await fetch(pServerURL);
-    let gameData = await response.json();
+    try {
+        let response = await fetch(pServerURL);
 
-    gTileMap = TileMap.constructFromObject(gameData.gameMap);
+        let gameData = await response.json();
 
-    for (let structureId in gameData.structureTemplates) {
-        gStructureTemplates[structureId] = Structure.constructFromObject(gameData.structureTemplates[structureId]);
-    }
+        gTileMap = TileMap.constructFromObject(gameData.gameMap);
 
-    for (let unitId in gameData.unitTemplates) {
-        gUnitTemplates[unitId] = Unit.constructFromObject(gameData.unitTemplates[unitId]);
-    }
+        for (let structureId in gameData.structureTemplates) {
+            gStructureTemplates[structureId] = Structure.constructFromObject(gameData.structureTemplates[structureId]);
+        }
 
-    gPlayer = Player.constructFromObject( gameData.player);
+        for (let unitId in gameData.unitTemplates) {
+            gUnitTemplates[unitId] = Unit.constructFromObject(gameData.unitTemplates[unitId]);
+        }
 
-    for (let armyId in gameData.armyList) {
-        gArmyList[armyId] = Army.constructFromObject(gameData.armyList[armyId]);
+        gPlayer = Player.constructFromObject(gameData.player);
+
+        for (let armyId in gameData.armyList) {
+            gArmyList[armyId] = Army.constructFromObject(gameData.armyList[armyId]);
+        }
+
+        // Process Build Orders
+        console.log(gameData.buildOrders);
+        let ordersArray = gameData.buildOrders;
+        gameData.buildOrders.forEach((order) => {
+            let currentTile = gTileMap.selectTile(order.tileX, order.tileY);
+            // Change map and resources based on the order
+            switch (order.type) {
+                case 'claimTile':
+                    currentTile.claimingTile = true;
+                    // Manage Costs
+                    gPlayer.labor -= 3;
+                    gPlayer.loseResource('food', 3);
+                    gPlayer.loseResource('wood', 2);
+                    updateResources();
+                    break;
+                case 'buildRoad':
+                    currentTile.buildingRoad = true;
+                    // Manage Costs
+                    gPlayer.labor -= 5;
+                    gPlayer.loseResource('food', 5);
+                    gPlayer.loseResource('wood', 3);
+                    gPlayer.loseResource('stone', 5);
+                    updateResources();
+                    break;
+                case 'improveQuality':
+                    currentTile.improvingQuality = true;
+                    // Manage Costs
+                    gPlayer.labor -= 1;
+                    gPlayer.loseResource('food', 1);
+                    gPlayer.loseResource('wood', 1);
+                    updateResources();
+                    break;
+                case 'buildStructure':
+                    currentTile.buildingStructure = gStructureTemplates[order.buildId].name;
+                    // Manage Costs
+                    gPlayer.labor -= gStructureTemplates[order.buildId].laborCost;
+                    for (const resource in gStructureTemplates[order.buildId].buildCost) {
+                        gPlayer.loseResource(resource, gStructureTemplates[order.buildId].buildCost[resource]);
+                    }
+                    updateResources();
+                    break;
+                case 'trainUnit':
+                    currentTile.garrison.trainingUnit = order.buildId;
+                    break;
+                default:
+                // nop
+            }
+
+            // Create the Order
+            gBuildOrders.push(new BuildOrder(order.type, order.tileX, order.tileY, order.buildId));
+        });
+
+    } catch (err) {
+        console.log(err);
     }
 }
