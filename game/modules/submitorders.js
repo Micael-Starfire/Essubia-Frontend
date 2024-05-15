@@ -13,22 +13,21 @@ export class SubmitOrders {
         SubmitOrders.instance = this;
     }
 
-    handleEvent = (pEvent) => {
+    handleEvent = async (pEvent) => {
         const outputJSON = JSON.stringify({ immediateOrders: this.immediateOrders,
                                             buildOrders: this.buildOrders,
                                             armyList: this.armyList });
 
-        
-        fetch(this.serverURL, {
+        let logMessage = "";
+        let response = await fetch(this.serverURL, {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json;charset=utf-8'
             },
             body: outputJSON
-        }).then( (response) => response.json()
-        ). then( (result) => console.log(result)
-        ).then( location.reload(true) )
-        //.catch( (err) => console.log(err));
-        //.then( (response) = response.json()).then( (message) => console.log(message.msg));
+        });
+        let result = await response.json();
+        location.reload(true);
+        console.log(result);
     };
 }
