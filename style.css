@@ -1,0 +1,32 @@
+body {
+    background-color: black;
+    color: white;
+    box-sizing: border-box;
+    font-size: 2.2vmin;
+}
+
+#playGame {
+    height: 20vh;
+    width: 20vw;
+    background-color: green;
+    color: white;
+    font-size: 200%;
+    border-radius: 50px;
+}
+
+#advanceTurn {
+    height: 10vh;
+    width: 10vw;
+    margin-top: 10vh;
+    margin-right: 20vw;
+    background-color:darkgreen;
+    color: white;
+}
+
+#resetMap {
+    height: 10vmin;
+    width: 10vmin;
+    background-color: red;
+    color: white;
+    border-radius: 100%;
+}

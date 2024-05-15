@@ -4,15 +4,24 @@
         <meta charset="utf-8" />
         <meta name="viewport" />
         <title>Essubia Login</title>
-        <link href="style.css" rel="stylesheet" type="text.css" />
+        <link href="style.css" rel="stylesheet" type="text/css" />
     </head>
 
     <body>
-        <h2>
-            <a href="./game/game.html">
-                Click to start Game
-            </a>
-        </h2>
+        <div>
+            <p>
+                Initial connection with the game server may take up to a few minutes.
+            </p>
+            <button id="playGame" onclick="window.location.href='./game/game.html'">
+                <h2>Play Game</h2>
+            </button>
+        </div>
+        
+
+        <button id="advanceTurn">Advance Turn</button>
+        <button id="resetMap">Reset Map</button>
+
+        <script type='module' src="index.js" ></script>
     </body>
 </html>
 
