@@ -17,10 +17,10 @@ import { SubmitOrders } from './modules/submitorders.js';
 // ----- Defined Constants ----------------------------------------------------
 const MAP_WIDTH = 16;
 const MAP_HEIGHT = 16;
-const SERVER_URL = "http://localhost:3000/api/map";
-//const SERVER_URL = "https://essubia-backend.onrender.com/api/map";
-const SUBMIT_URL = "http://localhost:3000/api/orders";
-//const SUBMIT_URL = "https://essubia-backend.onrender.com/api/orders";
+//const SERVER_URL = "http://localhost:3000/api/map";
+const SERVER_URL = "https://essubia-backend.onrender.com/api/map";
+//const SUBMIT_URL = "http://localhost:3000/api/orders";
+const SUBMIT_URL = "https://essubia-backend.onrender.com/api/orders";
 
 // ----- Global Variables -----------------------------------------------------
 window.gMenuOpen = false;

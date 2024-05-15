@@ -1,8 +1,8 @@
 
 // ----- Defined Constants ----------------------------------------------------
 
-// const SERVER_URL = "https://essubia-backend.onrender.com/api";
-const SERVER_URL = "http://localhost:3000/api";
+const SERVER_URL = "https://essubia-backend.onrender.com/api";
+//const SERVER_URL = "http://localhost:3000/api";
 
 // ----- Global Variables -----------------------------------------------------
 
