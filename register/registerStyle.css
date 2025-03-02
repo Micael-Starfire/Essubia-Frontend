@@ -1,0 +1,36 @@
+body {
+    background-color: black;
+    color: white;
+    box-sizing: border-box;
+    font-size: 2.2vmin;
+}
+
+#registerBox {
+    position: absolute;
+    top: 20vh;
+    left: 30vw;
+    width: 40vw;
+    height: 60vh;
+    border: 1vmax solid blue;
+    padding-left: 2vw;
+}
+
+#registerError {
+    height: 4vh;
+    color: white;
+}
+
+input {
+    width: 90%;
+    margin-bottom: 3vh;
+}
+
+#registerButton {
+    height: 3.5vh;
+    border-radius: 25px;
+    background-color: green;
+    color: white;
+    width: 10vw;
+    font-size: 100%;
+    font-family: inherit;
+}

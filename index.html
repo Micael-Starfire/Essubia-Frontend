@@ -8,18 +8,50 @@
     </head>
 
     <body>
-        <div>
-            <p>
-                Initial connection with the game server may take up to a few minutes.
-            </p>
-            <button id="playGame" onclick="window.location.href='./game/game.html'">
-                <h2>Play Game</h2>
-            </button>
+        <div id="navBar">
+            Conquest of Essubia
         </div>
+
+        <div id="newsFeed">
+            <br /><br />
+            <h2>Welcome to Conquest of Essubia</h2>
+        </div>
+
+        <div id="accountBox">
+            <div id="loginBox">
+                <h2>LOGIN</h2>
+                <p id="loginError"></p>
+                <form id="loginForm">
+                    <input type="text" id="login" name="login" placeholder="username or email" />
+                    <input type="password" id="password" name="password" placeholder="password" />
+                    <input type="submit" value="Login" />
+                </form>
+                <a href="./register/register.html"><h3>Create an account</h3></a>
+            </div>
+
+            <div id="welcomeBox">
+                <button id="logout">Logout</button>
+                <p id="welcomeText"></p>
+
+            </div>
+
+            <div id="actionBox">
+                <p>
+                    Initial connection with the game server may take up to a few minutes.
+                </p>
+                <button id="playGame" onclick="window.location.href='./game/game.html'">
+                    <h2>Play Game</h2>
+                </button>
+                <button id="advanceTurn">Advance Turn</button>
+                <button id="resetMap">Reset Map</button>
+            </div>
+        </div>
+
+        
         
 
-        <button id="advanceTurn">Advance Turn</button>
-        <button id="resetMap">Reset Map</button>
+        
+        
 
         <script type='module' src="index.js" ></script>
     </body>

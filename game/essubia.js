@@ -17,10 +17,10 @@ import { SubmitOrders } from './modules/submitorders.js';
 // ----- Defined Constants ----------------------------------------------------
 const MAP_WIDTH = 16;
 const MAP_HEIGHT = 16;
-//const SERVER_URL = "http://localhost:3000/api/map";
-const SERVER_URL = "https://essubia-backend.onrender.com/api/map";
-//const SUBMIT_URL = "http://localhost:3000/api/orders";
-const SUBMIT_URL = "https://essubia-backend.onrender.com/api/orders";
+const SERVER_URL = "http://localhost:5000/api/map";
+//const SERVER_URL = "https://essubia-backend.onrender.com/api/map";
+const SUBMIT_URL = "http://localhost:5000/api/orders";
+//const SUBMIT_URL = "https://essubia-backend.onrender.com/api/orders";
 
 // ----- Global Variables -----------------------------------------------------
 window.gMenuOpen = false;
@@ -1352,7 +1352,7 @@ async function loadGameData(pServerURL) {
         }
 
         // Process Build Orders
-        console.log(gameData.buildOrders);
+        //console.log(gameData.buildOrders);
         let ordersArray = gameData.buildOrders;
         gameData.buildOrders.forEach((order) => {
             let currentTile = gTileMap.selectTile(order.tileX, order.tileY);

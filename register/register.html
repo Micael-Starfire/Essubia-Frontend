@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" />
+        <title>Essubia Login</title>
+        <link href="registerStyle.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div id="registerBox">
+            <p id="registerError"></p>
+            <form id="registerForm">
+                <label for="username">Username</label>
+                <input type="text"
+                       id="username"
+                       name="username"
+                       placeholder="username"
+                       pattern="[A-Za-z0-9_\-]{4,30}"
+                       title="Username must be between 4 and 30 characters, and must contain
+                              only letters, numbers, dash, or underscore"
+                />
+                <br />
+                <label for="email">Email Address</label>
+                <input type="email"
+                       id="email"
+                       name="email"
+                       placeholder="email"
+                       title="Enter a valid email"
+                />
+                <br />
+                <label for="password">Password</label>
+                <input type="password"
+                       id="password"
+                       name="password"
+                       placeholder="password"
+                       pattern=".{8,250}"
+                       title="Password must be at least 8 characters"
+                />
+                <br />
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password"
+                       id="confirmPassword"
+                       name="confirmPassword"
+                       placeholder="confirm password"
+                />
+                <br />
+                <label for="invitecode">Invite Code</label>
+                <input type="text"
+                       id="invitecode"
+                       name="invitecode"
+                       pattern="[A-Za-z0-9]{0,30}"
+                />
+                <br />
+                <input type="submit" id="registerButton" value="Register" />
+            </form>
+        </div>
+
+        <script type="module" src="register.js"></script>
+    </body>
+</html>
